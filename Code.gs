@@ -38,9 +38,12 @@ function getAppData(filters) {
   const visibleReports = reports.filter(function(report) {
     const searchable = [report.title, report.description, report.location, report.reporterName]
       .join(' ').toLowerCase();
+    const matchesStatus = status === 'Belum selesai'
+      ? report.status !== 'Selesai'
+      : (status === 'all' || report.status === status);
     return (!query || searchable.indexOf(query) !== -1) &&
       (type === 'all' || report.type === type) &&
-      (status === 'all' || report.status === status);
+      matchesStatus;
   });
 
   return {
@@ -81,6 +84,33 @@ function saveReport(payload) {
   };
   appendRow_(SHEET_NAMES.reports, report);
   return { message: 'Laporan berhasil dikirim.', report: report };
+}
+
+function updateReport(id, payload) {
+  setupApp();
+  validateReport_(payload);
+  const sheet = getSpreadsheet_().getSheetByName(SHEET_NAMES.reports);
+  const values = sheet.getDataRange().getValues();
+  const idColumn = REPORT_HEADERS.indexOf('id');
+  for (let row = 1; row < values.length; row += 1) {
+    if (String(values[row][idColumn]) === String(id)) {
+      const report = rowToReport_(values[row]);
+      report.updatedAt = new Date().toISOString();
+      report.type = payload.type;
+      report.title = clean_(payload.title);
+      report.description = clean_(payload.description);
+      report.location = clean_(payload.location);
+      report.dateFoundOrLost = clean_(payload.dateFoundOrLost);
+      report.reporterName = clean_(payload.reporterName);
+      report.reporterClass = clean_(payload.reporterClass);
+      report.reporterRole = payload.reporterRole === 'Guru' ? 'Guru' : 'Siswa';
+      report.contact = clean_(payload.contact);
+      if (payload.photoData) report.photoUrl = uploadPhoto_(payload.photoData, payload.photoName, payload.type);
+      sheet.getRange(row + 1, 1, 1, REPORT_HEADERS.length).setValues([reportToRow_(report)]);
+      return { message: 'Laporan berhasil diperbarui.', report: report };
+    }
+  }
+  throw new Error('Laporan tidak ditemukan.');
 }
 
 function uploadPhoto_(dataUrl, originalName, reportType) {
