@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lost & Found Sekolah</title>
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f4f7fb;color:#172033}
+    button,input,select,textarea{font:inherit}
+    .app{max-width:1100px;margin:auto;min-height:100vh;background:#f4f7fb}
+    header{background:#1769e0;color:white;padding:22px 20px;border-radius:0 0 24px 24px}
+    header h1{margin:0 0 6px;font-size:25px}
+    header p{margin:0;opacity:.9}
+    main{padding:20px}
+    .hero{background:linear-gradient(135deg,#dcecff,#eef6ff);padding:24px;border-radius:22px;margin-bottom:20px}
+    .hero h2{margin:0 0 8px;font-size:28px}
+    .hero p{margin:0;color:#506078;line-height:1.5}
+    .actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}
+    .btn{border:0;border-radius:14px;padding:14px 16px;font-weight:700;cursor:pointer}
+    .primary{background:#1769e0;color:#fff}
+    .secondary{background:#fff;color:#1769e0;border:1px solid #d7e2f2}
+    .search{display:flex;gap:10px;margin-bottom:20px}
+    .search input{flex:1;padding:14px 16px;border:1px solid #d6deea;border-radius:14px;outline:none;background:#fff}
+    .stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:25px}
+    .stat{background:#fff;border-radius:17px;padding:18px;box-shadow:0 4px 15px #1720330d}
+    .stat strong{display:block;font-size:27px;margin-top:5px}
+    .section-title{display:flex;justify-content:space-between;align-items:center;margin:20px 0 12px}
+    .section-title h3{margin:0;font-size:20px}
+    .filters{display:flex;gap:8px;overflow:auto;margin-bottom:14px}
+    .filter{white-space:nowrap;border:1px solid #d7e0ed;background:#fff;border-radius:999px;padding:9px 14px;cursor:pointer}
+    .filter.active{background:#1769e0;color:#fff;border-color:#1769e0}
+    .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .card{background:#fff;border-radius:18px;padding:16px;box-shadow:0 4px 15px #1720330d;display:flex;gap:14px}
+    .icon{width:54px;height:54px;border-radius:15px;display:grid;place-items:center;font-size:26px;background:#eef4ff;flex:none}
+    .card h4{margin:0 0 5px;font-size:17px}
+    .card p{margin:4px 0;color:#647087;font-size:14px}
+    .badge{display:inline-block;padding:5px 9px;border-radius:999px;font-size:12px;font-weight:700;margin-top:7px}
+    .lost{background:#ffebeb;color:#d62828}
+    .found{background:#e8f8ee;color:#168443}
+    .empty{text-align:center;padding:35px;background:#fff;border-radius:18px;color:#69758a}
+    dialog{border:0;border-radius:22px;padding:0;width:min(560px,calc(100% - 28px));box-shadow:0 20px 60px #0003}
+    dialog::backdrop{background:#0007}
+    .modal{padding:22px}
+    .modal h2{margin:0 0 18px}
+    .field{margin-bottom:14px}
+    .field label{display:block;font-weight:700;margin-bottom:7px;font-size:14px}
+    .field input,.field select,.field textarea{width:100%;padding:12px 13px;border:1px solid #d5deea;border-radius:12px;outline:none}
+    textarea{resize:vertical;min-height:90px}
+    .modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
+    .toast{position:fixed;left:50%;bottom:25px;transform:translateX(-50%);background:#172033;color:white;padding:12px 18px;border-radius:999px;display:none;z-index:20}
+    @media(max-width:700px){
+      .cards{grid-template-columns:1fr}
+      .actions{grid-template-columns:1fr}
+      main{padding:15px}
+      header{border-radius:0 0 18px 18px}
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <h1>🔎 Lost & Found Sekolah</h1>
+    <p>Platform untuk melaporkan dan menemukan barang di sekolah.</p>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h2>Barang hilang? Jangan panik.</h2>
+      <p>Laporkan barang yang hilang atau barang yang kamu temukan agar lebih mudah dikembalikan kepada pemiliknya.</p>
+    </section>
+
+    <div class="actions">
+      <button class="btn primary" onclick="openModal(false)">🔴 Laporkan Barang Hilang</button>
+      <button class="btn secondary" onclick="openModal(true)">🟢 Laporkan Barang Ditemukan</button>
+    </div>
+
+    <div class="search">
+      <input id="search" type="search" placeholder="🔍 Cari nama barang, kategori, atau lokasi..." oninput="render()">
+    </div>
+
+    <div class="stats">
+      <div class="stat">🔴 Barang Hilang<strong id="lostCount">0</strong></div>
+      <div class="stat">🟢 Barang Ditemukan<strong id="foundCount">0</strong></div>
+    </div>
+
+    <div class="section-title">
+      <h3>📋 Laporan Barang</h3>
+    </div>
+
+    <div class="filters">
+      <button class="filter active" onclick="setFilter('all',this)">Semua</button>
+      <button class="filter" onclick="setFilter('lost',this)">Barang Hilang</button>
+      <button class="filter" onclick="setFilter('found',this)">Ditemukan</button>
+    </div>
+
+    <div id="cards" class="cards"></div>
+  </main>
+</div>
+
+<dialog id="reportDialog">
+  <form class="modal" method="dialog" onsubmit="submitReport(event)">
+    <h2 id="modalTitle">Laporkan Barang</h2>
+    <input type="hidden" id="reportType">
+    <input type="hidden" id="editIndex" value="-1">
+    <div class="field">
+      <label>Nama Barang</label>
+      <input id="name" required placeholder="Contoh: Dompet hitam">
+    </div>
+    <div class="field">
+      <label>Kategori</label>
+      <select id="category">
+        <option>Elektronik</option>
+        <option>Aksesoris</option>
+        <option>Seragam / Pakaian</option>
+        <option>Kunci</option>
+        <option>Dompet</option>
+        <option>Alat</option>
+        <option>Uang</option>
+        <option>Lainnya</option>
+      </select>
+    </div>
+    <div class="field">
+      <label id="locationLabel">Lokasi</label>
+      <input id="location" required placeholder="Contoh: Kelas 11-E">
+    </div>
+    <div class="field" id="moneyField" style="display:none">
+      <label>Nominal Uang yang Hilang</label>
+      <input id="moneyAmount" type="number" min="1" step="1" placeholder="Contoh: 50000">
+      <small style="display:block;margin-top:6px;color:#69758a">Isi nominal dalam rupiah. Contoh: 50000 untuk Rp50.000.</small>
+    </div>
+    <div class="field">
+      <label>Deskripsi / Ciri-ciri</label>
+      <textarea id="description" placeholder="Tuliskan ciri-ciri barang..."></textarea>
+    </div>
+    <div class="field">
+      <label>Nama Pelapor</label>
+      <input id="reporter" required placeholder="Nama kamu">
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn secondary" onclick="reportDialog.close()">Batal</button>
+      <button type="submit" class="btn primary" id="submitButton">Kirim Laporan</button>
+    </div>
+  </form>
+</dialog>
+
+<div id="toast" class="toast"></div>
+
+<script>
+const defaultReports = [
+  {name:"Tas Hitam",category:"Tas",location:"Kelas 11-E",description:"Tas hitam dengan gantungan kunci kecil.",reporter:"Siswa",type:"lost",date:"12 Agustus 2026"},
+  {name:"Dompet Cokelat",category:"Dompet",location:"Kantin Sekolah",description:"Dompet cokelat ditemukan di dekat meja.",reporter:"Siswa",type:"found",date:"12 Agustus 2026"},
+  {name:"Botol Minum Biru",category:"Botol",location:"Lapangan Sekolah",description:"Botol minum warna biru.",reporter:"Siswa",type:"found",date:"11 Agustus 2026"}
+];
+
+let reports = JSON.parse(localStorage.getItem("lostFoundReports") || "null") || defaultReports;
+let filter = "all";
+let currentType = "lost";
+
+function save(){ localStorage.setItem("lostFoundReports", JSON.stringify(reports)); }
+
+function openModal(found){
+  currentType = found ? "found" : "lost";
+  document.getElementById("modalTitle").textContent = found ? "🟢 Laporkan Barang Ditemukan" : "🔴 Laporkan Barang Hilang";
+  document.getElementById("locationLabel").textContent = found ? "Lokasi Ditemukan" : "Lokasi Terakhir Terlihat";
+  document.getElementById("name").value="";
+  document.getElementById("location").value="";
+  document.getElementById("description").value="";
+  document.getElementById("reporter").value="";
+  document.getElementById("moneyAmount").value="";
+  document.getElementById("moneyField").style.display="none";
+  document.getElementById("category").value="Elektronik";
+  document.getElementById("editIndex").value="-1";
+  document.getElementById("submitButton").textContent="Kirim Laporan";
+  document.getElementById("reportDialog").showModal();
+}
+
+document.getElementById("category").addEventListener("change", function(){
+  const moneyField = document.getElementById("moneyField");
+  moneyField.style.display = this.value === "Uang" ? "block" : "none";
+});
+
+function submitReport(e){
+  e.preventDefault();
+
+  const category = document.getElementById("category").value;
+  const moneyAmount = document.getElementById("moneyAmount").value.trim();
+  const editIndex = Number(document.getElementById("editIndex").value);
+
+  if(category === "Uang" && !moneyAmount){
+    document.getElementById("moneyAmount").focus();
+    showToast("⚠️ Masukkan nominal uang.");
+    return;
+  }
+
+  const moneyText = category === "Uang"
+    ? "Nominal: Rp" + Number(moneyAmount).toLocaleString("id-ID")
+    : "";
+
+  const existing = editIndex >= 0 ? reports[editIndex] : null;
+
+  const report = {
+    name: document.getElementById("name").value.trim(),
+    category: category,
+    location: document.getElementById("location").value.trim(),
+    description: document.getElementById("description").value.trim() || "Tidak ada deskripsi.",
+    reporter: document.getElementById("reporter").value.trim(),
+    moneyAmount: category === "Uang" ? Number(moneyAmount) : null,
+    moneyText: moneyText,
+    type: existing ? existing.type : currentType,
+    date: existing ? existing.date : new Date().toLocaleDateString("id-ID",{day:"numeric",month:"long",year:"numeric"})
+  };
+
+  if(editIndex >= 0){
+    reports[editIndex] = report;
+    showToast("✅ Laporan berhasil diperbarui!");
+  } else {
+    reports.unshift(report);
+    showToast("✅ Laporan berhasil ditambahkan!");
+  }
+
+  save();
+  render();
+  reportDialog.close();
+} 
+
+function editReport(index){
+  const r = reports[index];
+  if(!r) return;
+
+  currentType = r.type;
+  document.getElementById("editIndex").value = index;
+  document.getElementById("modalTitle").textContent =
+    r.type === "found" ? "✏️ Edit Barang Ditemukan" : "✏️ Edit Barang Hilang";
+  document.getElementById("locationLabel").textContent =
+    r.type === "found" ? "Lokasi Ditemukan" : "Lokasi Terakhir Terlihat";
+
+  document.getElementById("name").value = r.name || "";
+  document.getElementById("category").value = r.category || "Lainnya";
+  document.getElementById("location").value = r.location || "";
+  document.getElementById("description").value = r.description || "";
+  document.getElementById("reporter").value = r.reporter || "";
+  document.getElementById("moneyAmount").value = r.moneyAmount || "";
+  document.getElementById("moneyField").style.display =
+    r.category === "Uang" ? "block" : "none";
+  document.getElementById("submitButton").textContent = "Simpan Perubahan";
+
+  document.getElementById("reportDialog").showModal();
+} 
+
+function setFilter(value, el){
+  filter=value;
+  document.querySelectorAll(".filter").forEach(x=>x.classList.remove("active"));
+  el.classList.add("active");
+  render();
+}
+
+function render(){
+  const q = document.getElementById("search").value.toLowerCase().trim();
+  document.getElementById("lostCount").textContent = reports.filter(r=>r.type==="lost").length;
+  document.getElementById("foundCount").textContent = reports.filter(r=>r.type==="found").length;
+
+  const list = reports.filter(r=>{
+    const matchesFilter = filter==="all" || r.type===filter;
+    const text = `${r.name} ${r.category} ${r.location} ${r.description}`.toLowerCase();
+    return matchesFilter && text.includes(q);
+  });
+
+  const cards = document.getElementById("cards");
+  if(!list.length){
+    cards.innerHTML = `<div class="empty">📭<br><br>Tidak ada laporan yang cocok.</div>`;
+    return;
+  }
+
+  cards.innerHTML = list.map((r,i)=>`
+    <article class="card">
+      <div class="icon">${r.type==="found"?"📦":"🔎"}</div>
+      <div>
+        <h4>${escapeHtml(r.name)}</h4>
+        <p>🏷️ ${escapeHtml(r.category)}</p>
+        ${r.category === "Uang" && r.moneyText && r.type === "found" ? `<p>💰 ${escapeHtml(r.moneyText)}</p>` : ""}
+        <p>📍 ${escapeHtml(r.location)}</p>
+        <p>📅 ${escapeHtml(r.date)}</p>
+        <p>${escapeHtml(r.description)}</p>
+        <p>👤 ${escapeHtml(r.reporter)}</p>
+        <span class="badge ${r.type==="found"?"found":"lost"}">${r.type==="found"?"DITEMUKAN":"HILANG"}</span>
+        <div style="margin-top:9px">
+          <button class="btn secondary" style="padding:6px 10px;font-size:12px" onclick="editReport(${reports.indexOf(r)})">✏️ Edit</button>
+          ${r.type==="found" ? `<button class="btn secondary" style="margin-left:6px;padding:6px 10px;font-size:12px" onclick="claim(${reports.indexOf(r)})">Hubungi penemu</button>` : ""}
+        </div>
+      </div>
+    </article>
+  `).join("");
+}
+
+function claim(i){
+  showToast("ℹ️ Silakan hubungi pihak sekolah untuk proses pengambilan barang.");
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+}
+
+function showToast(text){
+  const t=document.getElementById("toast");
+  t.textContent=text;t.style.display="block";
+  setTimeout(()=>t.style.display="none",2500);
+}
+
+render();
+</script>
+</body>
+</html>
