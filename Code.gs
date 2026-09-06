@@ -3,6 +3,8 @@ const SHEET_NAMES = {
   users: 'Pengguna'
 };
 
+const PHOTO_FOLDER_PROPERTY = 'PHOTO_FOLDER_ID';
+
 const REPORT_HEADERS = [
   'id', 'createdAt', 'updatedAt', 'type', 'title', 'description',
   'location', 'dateFoundOrLost', 'reporterName', 'reporterClass',
@@ -56,6 +58,9 @@ function saveReport(payload) {
   setupApp();
   validateReport_(payload);
   const now = new Date().toISOString();
+  const photoUrl = payload.photoData
+    ? uploadPhoto_(payload.photoData, payload.photoName, payload.type)
+    : clean_(payload.photoUrl);
   const report = {
     id: Utilities.getUuid(),
     createdAt: now,
@@ -70,12 +75,30 @@ function saveReport(payload) {
     reporterRole: payload.reporterRole === 'Guru' ? 'Guru' : 'Siswa',
     contact: clean_(payload.contact),
     status: 'Dilaporkan',
-    photoUrl: clean_(payload.photoUrl),
+    photoUrl: photoUrl,
     claimedBy: '',
     notes: ''
   };
   appendRow_(SHEET_NAMES.reports, report);
   return { message: 'Laporan berhasil dikirim.', report: report };
+}
+
+function uploadPhoto_(dataUrl, originalName, reportType) {
+  const match = String(dataUrl).match(/^data:(image\/(?:jpeg|png|gif|webp));base64,([\s\S]+)$/i);
+  if (!match) throw new Error('Format gambar tidak didukung. Gunakan JPG, PNG, GIF, atau WebP.');
+  const bytes = Utilities.base64Decode(match[2]);
+  if (bytes.length > 5 * 1024 * 1024) throw new Error('Ukuran gambar maksimal 5 MB.');
+  const folderId = PropertiesService.getScriptProperties().getProperty(PHOTO_FOLDER_PROPERTY);
+  const folder = folderId ? DriveApp.getFolderById(folderId) : DriveApp.createFolder('TemuKembali - Foto Laporan');
+  if (!folderId) PropertiesService.getScriptProperties().setProperty(PHOTO_FOLDER_PROPERTY, folder.getId());
+  const safeName = clean_(originalName || 'foto-laporan').replace(/[^a-zA-Z0-9._-]/g, '-');
+  const file = folder.createFile(Utilities.newBlob(bytes, match[1], reportType + '-' + Date.now() + '-' + safeName));
+  try {
+    file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+  } catch (error) {
+    // Kebijakan domain dapat melarang sharing publik; akses Drive tetap berlaku.
+  }
+  return 'https://drive.google.com/uc?export=view&id=' + file.getId();
 }
 
 function updateReportStatus(id, status, actorName, note) {

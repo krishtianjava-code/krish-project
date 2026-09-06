@@ -4,13 +4,14 @@ Aplikasi web Google Apps Script untuk laporan barang hilang dan temuan di sekola
 
 ## Fitur
 
-- Form laporan barang hilang/temuan.
+- Form laporan barang hilang/temuan dengan upload foto.
 - Dashboard jumlah laporan, laporan aktif, temuan, dan laporan selesai.
 - Pencarian berdasarkan nama barang, lokasi, deskripsi, atau pelapor.
 - Filter jenis laporan dan status.
 - Penyimpanan otomatis ke Google Sheets.
 - Status laporan: `Dilaporkan`, `Diproses`, dan `Selesai`.
 - Tampilan responsif untuk HP dan komputer.
+- Foto laporan disimpan otomatis di folder Google Drive aplikasi dan ditampilkan pada riwayat.
 
 ## Cara memasang di Google Apps Script
 
@@ -25,6 +26,8 @@ Aplikasi web Google Apps Script untuk laporan barang hilang dan temuan di sekola
 7. Klik **Deploy**, salin **Web app URL**, lalu bagikan link tersebut kepada guru dan siswa.
 
 Data tersimpan pada spreadsheet `Database TemuKembali Sekolah` yang dibuat otomatis. Link spreadsheet dapat dilihat dari hasil fungsi `setupApp` atau dari Google Drive akun pemilik deployment.
+
+Foto yang diunggah disimpan pada folder Drive `TemuKembali - Foto Laporan`. Saat pertama kali ada foto, Apps Script akan meminta izin Google Drive tambahan. Jika kebijakan sekolah melarang link publik, foto tetap tersimpan dan hanya dapat dilihat oleh akun yang memiliki akses ke Drive.
 
 ## Catatan operasional
 
