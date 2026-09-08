@@ -45,21 +45,62 @@
     .lost { color: #d62828; background: #ffebeb; }
     .found { color: #168443; background: #e8f8ee; }
     .status { color: #1769e0; background: #e7f0ff; }
-    .card-actions { display: flex; gap: 6px; margin-top: 10px; }
+    .card-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
     .card-actions button { padding: 7px 9px; color: #1769e0; border: 1px solid #d7e2f2; border-radius: 8px; background: #fff; font-size: 12px; }
     .empty { grid-column: 1 / -1; padding: 35px; color: #69758a; text-align: center; background: #fff; border-radius: 18px; }
     dialog { width: min(560px, calc(100% - 28px)); padding: 0; border: 0; border-radius: 22px; box-shadow: 0 20px 60px #0003; }
     dialog::backdrop { background: #0007; }
-    .modal { padding: 22px; }
+    .modal { max-height: 90vh; overflow-y: auto; padding: 22px; }
     .modal h2 { margin: 0 0 18px; }
     .field { margin-bottom: 14px; }
     .field label { display: block; margin-bottom: 7px; font-weight: 700; font-size: 14px; }
     .field input, .field select, .field textarea { width: 100%; padding: 12px 13px; border: 1px solid #d5deea; border-radius: 12px; outline: none; }
     .field textarea { min-height: 90px; resize: vertical; }
     .field small { display: block; margin-top: 6px; color: #69758a; }
-    .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
+    .modal-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; margin-top: 18px; }
     .toast { position: fixed; z-index: 20; bottom: 25px; left: 50%; display: none; padding: 12px 18px; color: white; background: #172033; border-radius: 999px; transform: translateX(-50%); }
-    @media (max-width: 700px) { .cards, .actions { grid-template-columns: 1fr; } main { padding: 15px; } header { border-radius: 0 0 18px 18px; } .card-photo { width: 86px; height: 86px; } }
+    @media (max-width: 700px) {
+      .cards, .actions { grid-template-columns: 1fr; }
+      main { padding: 15px; }
+      header { border-radius: 0 0 18px 18px; }
+      .card-photo { width: 86px; height: 86px; }
+    }
+    @media (max-width: 480px) {
+      header { padding: 18px 15px; }
+      header h1 { font-size: 21px; }
+      main { padding: 12px; }
+      .hero { margin-bottom: 14px; padding: 18px; border-radius: 17px; }
+      .hero h2 { font-size: 23px; }
+      .actions { gap: 8px; margin: 14px 0; }
+      .btn { width: 100%; padding: 12px 13px; }
+      .access-bar { align-items: stretch; flex-direction: column; gap: 6px; }
+      .access-bar select { width: 100%; }
+      .search input { min-width: 0; padding: 12px 13px; }
+      .filters { margin-right: -12px; margin-bottom: 15px; padding-right: 12px; }
+      .stats { gap: 8px; margin-bottom: 18px; }
+      .stat { padding: 14px; border-radius: 14px; }
+      .stat strong { font-size: 23px; }
+      .section-title { align-items: flex-start; flex-direction: column; gap: 4px; }
+      .section-title h3 { font-size: 18px; }
+      .card { align-items: flex-start; gap: 10px; padding: 12px; border-radius: 14px; }
+      .card-photo { width: 72px; height: 72px; border-radius: 11px; }
+      .card h4 { font-size: 16px; }
+      .card p { font-size: 13px; }
+      .badge { font-size: 11px; padding: 4px 7px; }
+      .card-actions { gap: 5px; }
+      .card-actions button { flex: 1 1 auto; padding: 7px 8px; }
+      dialog { width: calc(100% - 20px); max-height: 92vh; border-radius: 16px; }
+      .modal { padding: 17px; }
+      .modal h2 { font-size: 21px; }
+      .modal-actions { justify-content: stretch; }
+      .modal-actions .btn { flex: 1 1 120px; }
+    }
+    @media (max-width: 360px) {
+      .card { display: block; }
+      .card-photo { width: 100%; height: 150px; margin-bottom: 9px; }
+      .card-actions button { flex-basis: 100%; }
+      .hero h2 { font-size: 21px; }
+    }
   </style>
 </head>
 <body>
