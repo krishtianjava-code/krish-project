@@ -61,8 +61,8 @@
     .field small { display: block; margin-top: 6px; color: #69758a; }
     .modal-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; margin-top: 18px; }
     .toast { position: fixed; z-index: 20; bottom: 25px; left: 50%; display: none; padding: 12px 18px; color: white; background: #172033; border-radius: 999px; transform: translateX(-50%); }
-    @media (max-width: 700px) {
-      .cards { grid-template-columns: 1fr; }
+    @media (max-width: 900px) and (orientation: portrait) {
+      .cards, .actions { grid-template-columns: 1fr; }
       header { padding: 24px 20px; border-radius: 0 0 18px 18px; }
       header h1 { font-size: 25px; }
       header p { font-size: 16px; }
@@ -71,6 +71,8 @@
       .hero h2 { font-size: 28px; }
       .hero p { font-size: 16px; }
       .utility { grid-template-columns: 1fr; gap: 0; }
+      .stats { display: flex; gap: 8px; overflow-x: auto; margin: 0 -20px 22px; padding: 0 20px 3px; }
+      .stat { min-width: 150px; flex: 1 0 150px; }
       .btn { min-height: 64px; padding: 15px 14px; font-size: 16px; }
       .search input { padding: 16px; font-size: 16px; }
       .access-bar { font-size: 16px; }
