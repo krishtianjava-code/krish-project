@@ -4,7 +4,8 @@ const SHEET_NAMES = {
 };
 
 const PHOTO_FOLDER_PROPERTY = 'PHOTO_FOLDER_ID';
-const ACCESS_ROLES = ['Guru', 'Penemu', 'Siswa'];
+const TEMP_ACCESS_PIN = '7392';
+const ACCESS_ROLES = ['Guru', 'Admin', 'Siswa'];
 const PUBLIC_STATUS_LABELS = {
   open: 'Belum diambil',
   done: 'Sudah diambil'
@@ -65,7 +66,7 @@ function getAppData(filters) {
 function saveReport(payload) {
   setupApp();
   validateReport_(payload);
-  validateAccess_(payload.accessRole, payload.type, 'create');
+  validateAccess_(payload.accessRole, payload.type, 'create', payload.accessPin);
   const now = new Date().toISOString();
   const photoUrl = payload.photoData
     ? uploadPhoto_(payload.photoData, payload.photoName, payload.type)
@@ -95,7 +96,7 @@ function saveReport(payload) {
 function updateReport(id, payload) {
   setupApp();
   validateReport_(payload);
-  validateAccess_(payload.accessRole, payload.type, 'edit');
+  validateAccess_(payload.accessRole, payload.type, 'edit', payload.accessPin);
   const sheet = getSpreadsheet_().getSheetByName(SHEET_NAMES.reports);
   const values = sheet.getDataRange().getValues();
   const idColumn = REPORT_HEADERS.indexOf('id');
@@ -142,7 +143,6 @@ function updateReportStatus(id, status, actorName, note, actorRole) {
   setupApp();
   const allowedStatuses = ['Dilaporkan', 'Diproses', 'Selesai'];
   if (allowedStatuses.indexOf(status) === -1) throw new Error('Status tidak valid.');
-  if (actorRole !== 'Guru') throw new Error('Hanya Guru yang dapat mengubah status laporan.');
   if (!clean_(actorName)) throw new Error('Nama pengubah wajib diisi.');
 
   const sheet = getSpreadsheet_().getSheetByName(SHEET_NAMES.reports);
@@ -151,12 +151,36 @@ function updateReportStatus(id, status, actorName, note, actorRole) {
   for (let row = 1; row < values.length; row += 1) {
     if (String(values[row][idColumn]) === String(id)) {
       const report = rowToReport_(values[row]);
+      validateAccess_(actorRole, report.type, 'status', arguments[5]);
       report.updatedAt = new Date().toISOString();
       report.status = status;
       report.notes = clean_(note);
       if (status === 'Selesai') report.claimedBy = clean_(actorName);
       sheet.getRange(row + 1, 1, 1, REPORT_HEADERS.length).setValues([reportToRow_(report)]);
       return { message: 'Status laporan diperbarui.', report: report };
+    }
+  }
+  throw new Error('Laporan tidak ditemukan.');
+}
+
+function verifyAccess(role, accessPin) {
+  if (['Guru', 'Admin'].indexOf(role) !== -1) validatePin_(accessPin);
+  else if (role !== 'Siswa') throw new Error('Peran akses tidak valid.');
+  return { valid: true };
+}
+
+function deleteReport(id, actorRole, accessPin) {
+  setupApp();
+  const sheet = getSpreadsheet_().getSheetByName(SHEET_NAMES.reports);
+  const values = sheet.getDataRange().getValues();
+  const idColumn = REPORT_HEADERS.indexOf('id');
+  for (let row = 1; row < values.length; row += 1) {
+    if (String(values[row][idColumn]) === String(id)) {
+      const report = rowToReport_(values[row]);
+      validateAccess_(actorRole, report.type, 'delete', accessPin);
+      trashPhoto_(report.photoUrl);
+      sheet.deleteRow(row + 1);
+      return { message: 'Laporan berhasil dihapus.' };
     }
   }
   throw new Error('Laporan tidak ditemukan.');
@@ -207,21 +231,33 @@ function validateReport_(payload) {
     });
 }
 
-function validateAccess_(role, reportType, action) {
+function validateAccess_(role, reportType, action, accessPin) {
   if (ACCESS_ROLES.indexOf(role) === -1) throw new Error('Peran akses tidak valid.');
-  if (action === 'create' && role === 'Penemu' && reportType !== 'Temuan') {
-    throw new Error('Penemu hanya dapat membuat laporan barang temuan.');
-  }
   if (action === 'create' && role === 'Siswa' && reportType !== 'Hilang') {
     throw new Error('Siswa hanya dapat membuat laporan barang hilang.');
   }
-  if (action === 'edit' && role !== 'Guru' && (role !== 'Penemu' || reportType !== 'Temuan')) {
-    throw new Error('Peran ini tidak dapat mengubah laporan tersebut.');
+  if (['Guru', 'Admin'].indexOf(role) !== -1) validatePin_(accessPin);
+  if (['edit', 'delete', 'status'].indexOf(action) !== -1 && role === 'Siswa') {
+    throw new Error('Siswa tidak dapat mengubah laporan.');
   }
 }
 
 function cleanRole_(role) {
   return ACCESS_ROLES.indexOf(role) === -1 ? 'Siswa' : role;
+}
+
+function validatePin_(accessPin) {
+  if (String(accessPin || '') !== TEMP_ACCESS_PIN) throw new Error('PIN Guru/Admin salah.');
+}
+
+function trashPhoto_(photoUrl) {
+  const match = String(photoUrl || '').match(/[?&]id=([^&]+)/) || String(photoUrl || '').match(/\/d\/([^/]+)/);
+  if (!match) return;
+  try {
+    DriveApp.getFileById(decodeURIComponent(match[1])).setTrashed(true);
+  } catch (error) {
+    // Laporan tetap dapat dihapus meskipun foto sudah tidak tersedia.
+  }
 }
 
 function clean_(value) {

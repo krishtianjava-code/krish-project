@@ -1,6 +1,6 @@
 # TemuKembali Sekolah
 
-Aplikasi web Google Apps Script untuk laporan barang hilang dan temuan di sekolah. Siswa dan penemu dapat membuat laporan sesuai perannya, sedangkan guru mengelola pengambilan barang.
+Aplikasi web Google Apps Script untuk laporan barang hilang dan temuan di sekolah. Siswa membuat laporan barang hilang, sedangkan Guru/Admin mengelola seluruh laporan.
 
 ## Fitur
 
@@ -10,7 +10,7 @@ Aplikasi web Google Apps Script untuk laporan barang hilang dan temuan di sekola
 - Filter jenis laporan dan status `Belum diambil` atau `Sudah diambil`.
 - Penyimpanan otomatis ke Google Sheets.
 - Status internal laporan: `Dilaporkan`, `Diproses`, dan `Selesai`, ditampilkan kepada pengguna sebagai `Belum diambil` dan `Sudah diambil`.
-- Hak akses aplikasi: `Siswa` membuat laporan barang hilang, `Penemu` membuat atau mengubah laporan temuan, dan `Guru` mengelola semua laporan serta status pengambilan.
+- Hak akses aplikasi: `Siswa` membuat laporan barang hilang, sedangkan `Guru` dan `Admin` memerlukan PIN untuk membuat, mengubah, menandai selesai, atau menghapus laporan.
 - Tampilan responsif untuk HP dan komputer.
 - Foto laporan disimpan otomatis di folder Google Drive aplikasi dan ditampilkan pada riwayat.
 
@@ -32,7 +32,7 @@ Foto yang diunggah disimpan pada folder Drive `TemuKembali - Foto Laporan`. Saat
 
 ## Catatan operasional
 
-- Versi ini menggunakan pemilih peran aplikasi dan nama/kontak yang diisi pelapor, tanpa login akun sekolah. Untuk penggunaan produksi, batasi akses Web App ke domain sekolah dan tambahkan autentikasi Google untuk mencegah pengguna memilih peran lain secara manual.
-- Tombol `Tandai selesai` hanya tersedia untuk peran `Guru` dan meminta nama pengelola.
+- Versi ini menggunakan pemilih peran aplikasi dan PIN sementara untuk `Guru`/`Admin`; PIN perlu diganti sebelum digunakan di lingkungan nyata.
+- Tombol `Tandai selesai` dan `Hapus` hanya tersedia untuk peran `Guru`/`Admin`.
 - Deployment disarankan memakai akses terbatas domain sekolah agar pemilihan peran dapat dikendalikan.
 
