@@ -1,15 +1,16 @@
 # TemuKembali Sekolah
 
-Aplikasi web Google Apps Script untuk laporan barang hilang dan temuan di sekolah. Siswa dan guru dapat membuat laporan, mencari laporan, serta menandai laporan yang sudah selesai.
+Aplikasi web Google Apps Script untuk laporan barang hilang dan temuan di sekolah. Siswa dan penemu dapat membuat laporan sesuai perannya, sedangkan guru mengelola pengambilan barang.
 
 ## Fitur
 
 - Form laporan barang hilang/temuan dengan upload foto.
-- Dashboard jumlah laporan, laporan aktif, temuan, dan laporan selesai.
+- Dashboard jumlah laporan, laporan `Belum diambil`, temuan aktif, dan laporan `Sudah diambil`.
 - Pencarian berdasarkan nama barang, lokasi, deskripsi, atau pelapor.
-- Filter jenis laporan dan status.
+- Filter jenis laporan dan status `Belum diambil` atau `Sudah diambil`.
 - Penyimpanan otomatis ke Google Sheets.
-- Status laporan: `Dilaporkan`, `Diproses`, dan `Selesai`.
+- Status internal laporan: `Dilaporkan`, `Diproses`, dan `Selesai`, ditampilkan kepada pengguna sebagai `Belum diambil` dan `Sudah diambil`.
+- Hak akses aplikasi: `Siswa` membuat laporan barang hilang, `Penemu` membuat atau mengubah laporan temuan, dan `Guru` mengelola semua laporan serta status pengambilan.
 - Tampilan responsif untuk HP dan komputer.
 - Foto laporan disimpan otomatis di folder Google Drive aplikasi dan ditampilkan pada riwayat.
 
@@ -31,6 +32,7 @@ Foto yang diunggah disimpan pada folder Drive `TemuKembali - Foto Laporan`. Saat
 
 ## Catatan operasional
 
-- Versi ini menggunakan nama dan kontak yang diisi pelapor, tanpa login akun sekolah.
-- Tombol `Tandai selesai` meminta nama pengelola. Untuk penggunaan produksi, batasi akses Web App ke domain sekolah dan tambahkan autentikasi/daftar guru.
-- Link Web App tidak bisa dibuat dari repositori ini secara otomatis karena deployment harus memakai akun Google pemilik spreadsheet dan Apps Script.
+- Versi ini menggunakan pemilih peran aplikasi dan nama/kontak yang diisi pelapor, tanpa login akun sekolah. Untuk penggunaan produksi, batasi akses Web App ke domain sekolah dan tambahkan autentikasi Google untuk mencegah pengguna memilih peran lain secara manual.
+- Tombol `Tandai selesai` hanya tersedia untuk peran `Guru` dan meminta nama pengelola.
+- Deployment disarankan memakai akses terbatas domain sekolah agar pemilihan peran dapat dikendalikan.
+

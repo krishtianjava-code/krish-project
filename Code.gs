@@ -4,6 +4,11 @@ const SHEET_NAMES = {
 };
 
 const PHOTO_FOLDER_PROPERTY = 'PHOTO_FOLDER_ID';
+const ACCESS_ROLES = ['Guru', 'Penemu', 'Siswa'];
+const PUBLIC_STATUS_LABELS = {
+  open: 'Belum diambil',
+  done: 'Sudah diambil'
+};
 
 const REPORT_HEADERS = [
   'id', 'createdAt', 'updatedAt', 'type', 'title', 'description',
@@ -38,9 +43,9 @@ function getAppData(filters) {
   const visibleReports = reports.filter(function(report) {
     const searchable = [report.title, report.description, report.location, report.reporterName]
       .join(' ').toLowerCase();
-    const matchesStatus = status === 'Belum selesai'
+    const matchesStatus = status === PUBLIC_STATUS_LABELS.open
       ? report.status !== 'Selesai'
-      : (status === 'all' || report.status === status);
+      : (status === 'all' || (status === PUBLIC_STATUS_LABELS.done ? report.status === 'Selesai' : report.status === status));
     return (!query || searchable.indexOf(query) !== -1) &&
       (type === 'all' || report.type === type) &&
       matchesStatus;
@@ -50,7 +55,7 @@ function getAppData(filters) {
     reports: visibleReports,
     stats: {
       total: reports.length,
-      open: reports.filter(function(item) { return item.status === 'Dilaporkan'; }).length,
+      open: reports.filter(function(item) { return item.status !== 'Selesai'; }).length,
       found: reports.filter(function(item) { return item.type === 'Temuan' && item.status !== 'Selesai'; }).length,
       returned: reports.filter(function(item) { return item.status === 'Selesai'; }).length
     }
@@ -60,6 +65,7 @@ function getAppData(filters) {
 function saveReport(payload) {
   setupApp();
   validateReport_(payload);
+  validateAccess_(payload.accessRole, payload.type, 'create');
   const now = new Date().toISOString();
   const photoUrl = payload.photoData
     ? uploadPhoto_(payload.photoData, payload.photoName, payload.type)
@@ -75,7 +81,7 @@ function saveReport(payload) {
     dateFoundOrLost: clean_(payload.dateFoundOrLost),
     reporterName: clean_(payload.reporterName),
     reporterClass: clean_(payload.reporterClass),
-    reporterRole: payload.reporterRole === 'Guru' ? 'Guru' : 'Siswa',
+    reporterRole: cleanRole_(payload.reporterRole || payload.accessRole),
     contact: clean_(payload.contact),
     status: 'Dilaporkan',
     photoUrl: photoUrl,
@@ -89,6 +95,7 @@ function saveReport(payload) {
 function updateReport(id, payload) {
   setupApp();
   validateReport_(payload);
+  validateAccess_(payload.accessRole, payload.type, 'edit');
   const sheet = getSpreadsheet_().getSheetByName(SHEET_NAMES.reports);
   const values = sheet.getDataRange().getValues();
   const idColumn = REPORT_HEADERS.indexOf('id');
@@ -103,7 +110,7 @@ function updateReport(id, payload) {
       report.dateFoundOrLost = clean_(payload.dateFoundOrLost);
       report.reporterName = clean_(payload.reporterName);
       report.reporterClass = clean_(payload.reporterClass);
-      report.reporterRole = payload.reporterRole === 'Guru' ? 'Guru' : 'Siswa';
+      report.reporterRole = cleanRole_(payload.reporterRole || payload.accessRole);
       report.contact = clean_(payload.contact);
       if (payload.photoData) report.photoUrl = uploadPhoto_(payload.photoData, payload.photoName, payload.type);
       sheet.getRange(row + 1, 1, 1, REPORT_HEADERS.length).setValues([reportToRow_(report)]);
@@ -131,10 +138,11 @@ function uploadPhoto_(dataUrl, originalName, reportType) {
   return 'https://drive.google.com/uc?export=view&id=' + file.getId();
 }
 
-function updateReportStatus(id, status, actorName, note) {
+function updateReportStatus(id, status, actorName, note, actorRole) {
   setupApp();
   const allowedStatuses = ['Dilaporkan', 'Diproses', 'Selesai'];
   if (allowedStatuses.indexOf(status) === -1) throw new Error('Status tidak valid.');
+  if (actorRole !== 'Guru') throw new Error('Hanya Guru yang dapat mengubah status laporan.');
   if (!clean_(actorName)) throw new Error('Nama pengubah wajib diisi.');
 
   const sheet = getSpreadsheet_().getSheetByName(SHEET_NAMES.reports);
@@ -197,6 +205,23 @@ function validateReport_(payload) {
     .forEach(function(field) {
       if (!clean_(payload[field])) throw new Error('Kolom ' + field + ' wajib diisi.');
     });
+}
+
+function validateAccess_(role, reportType, action) {
+  if (ACCESS_ROLES.indexOf(role) === -1) throw new Error('Peran akses tidak valid.');
+  if (action === 'create' && role === 'Penemu' && reportType !== 'Temuan') {
+    throw new Error('Penemu hanya dapat membuat laporan barang temuan.');
+  }
+  if (action === 'create' && role === 'Siswa' && reportType !== 'Hilang') {
+    throw new Error('Siswa hanya dapat membuat laporan barang hilang.');
+  }
+  if (action === 'edit' && role !== 'Guru' && (role !== 'Penemu' || reportType !== 'Temuan')) {
+    throw new Error('Peran ini tidak dapat mengubah laporan tersebut.');
+  }
+}
+
+function cleanRole_(role) {
+  return ACCESS_ROLES.indexOf(role) === -1 ? 'Siswa' : role;
 }
 
 function clean_(value) {
