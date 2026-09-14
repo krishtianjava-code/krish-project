@@ -10,8 +10,10 @@ Aplikasi web Google Apps Script untuk laporan barang hilang dan temuan di sekola
 - Filter jenis laporan dan status `Belum diambil` atau `Sudah diambil`.
 - Penyimpanan otomatis ke Google Sheets.
 - Status internal laporan: `Dilaporkan`, `Diproses`, dan `Selesai`, ditampilkan kepada pengguna sebagai `Belum diambil` dan `Sudah diambil`.
-- Hak akses aplikasi: `Siswa` membuat laporan barang hilang, `Penemu` membuat atau mengubah laporan temuan, dan `Guru` mengelola semua laporan serta status pengambilan.
-- Login admin sebelum aplikasi dapat diakses, dengan sesi server sementara.
+- Login menggunakan username admin atau NIS siswa dengan sesi server sementara.
+- Admin dapat mendaftarkan akun siswa berisi NIS, nama, password, dan kelas. Data tersimpan di sheet `Pengguna`.
+- Identitas nama, NIS, dan kelas pelapor diambil otomatis dari akun yang sedang login.
+- Detail laporan dapat dibuka dari tombol `Detail` pada setiap laporan.
 - Tampilan responsif untuk HP dan komputer.
 - Foto laporan disimpan otomatis di folder Google Drive aplikasi dan ditampilkan pada riwayat.
 
@@ -21,7 +23,7 @@ Aplikasi web Google Apps Script untuk laporan barang hilang dan temuan di sekola
 2. Salin isi `Code.gs` ke file `Code.gs` pada project Apps Script.
 3. Tambahkan file HTML baru bernama `Index`, lalu salin isi `Index.html` ke file tersebut.
 4. Simpan project, pilih fungsi `setupApp` dari dropdown fungsi, lalu klik **Run**. Saat diminta izin, lanjutkan otorisasi memakai akun sekolah.
-5. Buat kredensial admin dengan menjalankan `setAdminCredentials_('username-admin', 'password-minimal-8-karakter')` dari editor Apps Script. Ganti kedua nilai contoh tersebut sebelum menjalankan. Password disimpan sebagai hash di Script Properties.
+5. Jalankan `setupApp` sekali dari editor Apps Script. Kredensial awal admin adalah username `admin` dan password `admin1234`. Password disimpan sebagai hash di Script Properties.
 6. Pilih **Deploy > New deployment**.
 7. Pilih jenis **Web app**, atur:
 	- **Execute as**: `Me`
@@ -34,9 +36,9 @@ Foto yang diunggah disimpan pada folder Drive `TemuKembali - Foto Laporan`. Saat
 
 ## Catatan operasional
 
-- Semua fitur aplikasi membutuhkan sesi login admin. Sesi berakhir setelah sekitar 6 jam atau ketika admin memilih `Keluar`.
-- Pemilih peran masih digunakan untuk menentukan hak akses operasi laporan di dalam aplikasi. Batasi akses Web App ke domain sekolah untuk perlindungan tambahan.
-- Jika password admin perlu diganti, jalankan kembali `setAdminCredentials_` dari editor Apps Script, lalu deploy versi terbaru bila deployment tidak memakai versi head.
-- Tombol `Tandai selesai` hanya tersedia untuk peran `Guru` dan meminta nama pengelola.
+- Semua fitur aplikasi membutuhkan sesi login. Sesi berakhir setelah sekitar 6 jam atau ketika pengguna memilih `Keluar`.
+- Setelah login sebagai admin, gunakan panel `Daftarkan NIS Siswa` untuk membuat akun siswa.
+- Admin dapat mengganti password admin dengan menjalankan `setAdminCredentials_('admin', 'password-baru')` dari editor Apps Script.
+- Tombol `Tandai selesai` hanya tersedia untuk admin.
 - Deployment disarankan memakai akses terbatas domain sekolah agar pemilihan peran dapat dikendalikan.
 

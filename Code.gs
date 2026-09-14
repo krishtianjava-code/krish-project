@@ -6,9 +6,9 @@ const SHEET_NAMES = {
 const PHOTO_FOLDER_PROPERTY = 'PHOTO_FOLDER_ID';
 const ADMIN_USERNAME_PROPERTY = 'ADMIN_USERNAME';
 const ADMIN_PASSWORD_HASH_PROPERTY = 'ADMIN_PASSWORD_HASH';
-const ADMIN_SESSION_PREFIX = 'ADMIN_SESSION_';
-const ADMIN_SESSION_SECONDS = 21600;
-const ACCESS_ROLES = ['Guru', 'Penemu', 'Siswa'];
+const SESSION_PREFIX = 'APP_SESSION_';
+const SESSION_SECONDS = 21600;
+const USER_HEADERS = ['nis', 'name', 'passwordHash', 'className', 'createdAt'];
 const PUBLIC_STATUS_LABELS = {
   open: 'Belum diambil',
   done: 'Sudah diambil'
@@ -17,7 +17,7 @@ const PUBLIC_STATUS_LABELS = {
 const REPORT_HEADERS = [
   'id', 'createdAt', 'updatedAt', 'type', 'title', 'description',
   'location', 'dateFoundOrLost', 'reporterName', 'reporterClass',
-  'reporterRole', 'contact', 'status', 'photoUrl', 'claimedBy', 'notes'
+  'reporterNis', 'reporterRole', 'contact', 'status', 'photoUrl', 'claimedBy', 'notes'
 ];
 
 function doGet() {
@@ -30,8 +30,11 @@ function doGet() {
 function setupApp() {
   const spreadsheet = getSpreadsheet_();
   const reportsSheet = getOrCreateSheet_(spreadsheet, SHEET_NAMES.reports, REPORT_HEADERS);
-  getOrCreateSheet_(spreadsheet, SHEET_NAMES.users, ['name', 'className', 'role', 'contact', 'createdAt']);
+  ensureReportHeaders_(reportsSheet);
+  const usersSheet = getOrCreateSheet_(spreadsheet, SHEET_NAMES.users, USER_HEADERS);
+  ensureUserHeaders_(usersSheet);
   PropertiesService.getScriptProperties().setProperty('SPREADSHEET_ID', spreadsheet.getId());
+  initializeAdminCredentials_();
   reportsSheet.setFrozenRows(1);
   return { spreadsheetUrl: spreadsheet.getUrl(), message: 'Database siap digunakan.' };
 }
@@ -48,28 +51,67 @@ function setAdminCredentials_(username, password) {
   return 'Kredensial admin berhasil disimpan.';
 }
 
-function loginAdmin(username, password) {
+function initializeAdminCredentials_() {
+  const properties = PropertiesService.getScriptProperties();
+  if (!properties.getProperty(ADMIN_USERNAME_PROPERTY)) properties.setProperty(ADMIN_USERNAME_PROPERTY, 'admin');
+  if (!properties.getProperty(ADMIN_PASSWORD_HASH_PROPERTY)) {
+    properties.setProperty(ADMIN_PASSWORD_HASH_PROPERTY, hashPassword_('admin1234'));
+  }
+}
+
+function loginUser(username, password) {
+  setupApp();
   const properties = PropertiesService.getScriptProperties();
   const configuredUsername = properties.getProperty(ADMIN_USERNAME_PROPERTY);
   const configuredHash = properties.getProperty(ADMIN_PASSWORD_HASH_PROPERTY);
-  if (!configuredUsername || !configuredHash) {
-    throw new Error('Login admin belum dikonfigurasi. Jalankan setAdminCredentials_ dari editor Apps Script.');
-  }
-  if (String(username || '').trim() !== configuredUsername || hashPassword_(password) !== configuredHash) {
-    throw new Error('Username atau password admin salah.');
+  const login = String(username || '').trim();
+  const secret = String(password || '');
+  let user;
+  if (login === configuredUsername && hashPassword_(secret) === configuredHash) {
+    user = { accountType: 'admin', username: configuredUsername, name: 'Administrator', className: '' };
+  } else {
+    user = findUserByNis_(login);
+    if (!user || hashPassword_(secret) !== user.passwordHash) throw new Error('NIS/username atau password salah.');
+    user.accountType = 'siswa';
   }
   const token = Utilities.getUuid();
-  CacheService.getScriptCache().put(ADMIN_SESSION_PREFIX + token, configuredUsername, ADMIN_SESSION_SECONDS);
-  return { token: token, username: configuredUsername };
+  CacheService.getScriptCache().put(SESSION_PREFIX + token, JSON.stringify(user), SESSION_SECONDS);
+  return { token: token, user: publicUser_(user) };
 }
 
-function logoutAdmin(token) {
-  if (token) CacheService.getScriptCache().remove(ADMIN_SESSION_PREFIX + String(token));
+function logoutUser(token) {
+  if (token) CacheService.getScriptCache().remove(SESSION_PREFIX + String(token));
   return { loggedOut: true };
 }
 
+function registerStudent(token, payload) {
+  const session = requireSession_(token, 'admin');
+  if (!session) throw new Error('Hanya admin yang dapat mendaftarkan siswa.');
+  setupApp();
+  const nis = clean_(payload && payload.nis);
+  const name = clean_(payload && payload.name);
+  const className = clean_(payload && payload.className);
+  const password = String(payload && payload.password || '');
+  if (!nis || !name || !className || password.length < 6) {
+    throw new Error('NIS, nama, kelas, dan password minimal 6 karakter wajib diisi.');
+  }
+  if (findUserByNis_(nis)) throw new Error('NIS tersebut sudah terdaftar.');
+  getSpreadsheet_().getSheetByName(SHEET_NAMES.users).appendRow([nis, name, hashPassword_(password), className, new Date().toISOString()]);
+  return { message: 'Akun siswa berhasil didaftarkan.', student: { nis: nis, name: name, className: className } };
+}
+
+function listStudents(token) {
+  requireSession_(token, 'admin');
+  setupApp();
+  const sheet = getSpreadsheet_().getSheetByName(SHEET_NAMES.users);
+  if (!sheet || sheet.getLastRow() < 2) return [];
+  return sheet.getDataRange().getValues().slice(1).map(function(row) {
+    return { nis: String(row[0] || ''), name: String(row[1] || ''), className: String(row[3] || '') };
+  }).filter(function(student) { return student.nis; });
+}
+
 function getAppData(token, filters) {
-  requireAdmin_(token);
+  requireSession_(token);
   setupApp();
   const reports = readReports_();
   const safeFilters = filters || {};
@@ -100,10 +142,9 @@ function getAppData(token, filters) {
 }
 
 function saveReport(token, payload) {
-  requireAdmin_(token);
+  const session = requireSession_(token);
   setupApp();
   validateReport_(payload);
-  validateAccess_(payload.accessRole, payload.type, 'create');
   const now = new Date().toISOString();
   const photoUrl = payload.photoData
     ? uploadPhoto_(payload.photoData, payload.photoName, payload.type)
@@ -117,9 +158,10 @@ function saveReport(token, payload) {
     description: clean_(payload.description),
     location: clean_(payload.location),
     dateFoundOrLost: clean_(payload.dateFoundOrLost),
-    reporterName: clean_(payload.reporterName),
-    reporterClass: clean_(payload.reporterClass),
-    reporterRole: cleanRole_(payload.reporterRole || payload.accessRole),
+    reporterName: session.name,
+    reporterClass: session.className || 'Admin',
+    reporterNis: session.nis || '',
+    reporterRole: session.accountType === 'admin' ? 'Admin' : 'Siswa',
     contact: clean_(payload.contact),
     status: 'Dilaporkan',
     photoUrl: photoUrl,
@@ -131,25 +173,22 @@ function saveReport(token, payload) {
 }
 
 function updateReport(token, id, payload) {
-  requireAdmin_(token);
+  const session = requireSession_(token);
   setupApp();
   validateReport_(payload);
-  validateAccess_(payload.accessRole, payload.type, 'edit');
   const sheet = getSpreadsheet_().getSheetByName(SHEET_NAMES.reports);
   const values = sheet.getDataRange().getValues();
   const idColumn = REPORT_HEADERS.indexOf('id');
   for (let row = 1; row < values.length; row += 1) {
     if (String(values[row][idColumn]) === String(id)) {
       const report = rowToReport_(values[row]);
+      if (session.accountType !== 'admin' && report.reporterNis !== session.nis) throw new Error('Anda hanya dapat mengubah laporan sendiri.');
       report.updatedAt = new Date().toISOString();
       report.type = payload.type;
       report.title = clean_(payload.title);
       report.description = clean_(payload.description);
       report.location = clean_(payload.location);
       report.dateFoundOrLost = clean_(payload.dateFoundOrLost);
-      report.reporterName = clean_(payload.reporterName);
-      report.reporterClass = clean_(payload.reporterClass);
-      report.reporterRole = cleanRole_(payload.reporterRole || payload.accessRole);
       report.contact = clean_(payload.contact);
       if (payload.photoData) report.photoUrl = uploadPhoto_(payload.photoData, payload.photoName, payload.type);
       sheet.getRange(row + 1, 1, 1, REPORT_HEADERS.length).setValues([reportToRow_(report)]);
@@ -178,11 +217,10 @@ function uploadPhoto_(dataUrl, originalName, reportType) {
 }
 
 function updateReportStatus(token, id, status, actorName, note, actorRole) {
-  requireAdmin_(token);
+  requireSession_(token, 'admin');
   setupApp();
   const allowedStatuses = ['Dilaporkan', 'Diproses', 'Selesai'];
   if (allowedStatuses.indexOf(status) === -1) throw new Error('Status tidak valid.');
-  if (actorRole !== 'Guru') throw new Error('Hanya Guru yang dapat mengubah status laporan.');
   if (!clean_(actorName)) throw new Error('Nama pengubah wajib diisi.');
 
   const sheet = getSpreadsheet_().getSheetByName(SHEET_NAMES.reports);
@@ -241,27 +279,10 @@ function reportToRow_(report) {
 
 function validateReport_(payload) {
   if (!payload || ['Hilang', 'Temuan'].indexOf(payload.type) === -1) throw new Error('Jenis laporan tidak valid.');
-  ['title', 'description', 'location', 'dateFoundOrLost', 'reporterName', 'reporterClass', 'contact']
+  ['title', 'description', 'location', 'dateFoundOrLost', 'contact']
     .forEach(function(field) {
       if (!clean_(payload[field])) throw new Error('Kolom ' + field + ' wajib diisi.');
     });
-}
-
-function validateAccess_(role, reportType, action) {
-  if (ACCESS_ROLES.indexOf(role) === -1) throw new Error('Peran akses tidak valid.');
-  if (action === 'create' && role === 'Penemu' && reportType !== 'Temuan') {
-    throw new Error('Penemu hanya dapat membuat laporan barang temuan.');
-  }
-  if (action === 'create' && role === 'Siswa' && reportType !== 'Hilang') {
-    throw new Error('Siswa hanya dapat membuat laporan barang hilang.');
-  }
-  if (action === 'edit' && role !== 'Guru' && (role !== 'Penemu' || reportType !== 'Temuan')) {
-    throw new Error('Peran ini tidak dapat mengubah laporan tersebut.');
-  }
-}
-
-function cleanRole_(role) {
-  return ACCESS_ROLES.indexOf(role) === -1 ? 'Siswa' : role;
 }
 
 function clean_(value) {
@@ -276,9 +297,66 @@ function hashPassword_(password) {
   }).join('');
 }
 
-function requireAdmin_(token) {
+function requireSession_(token, requiredType) {
   const value = String(token || '');
-  if (!value || !CacheService.getScriptCache().get(ADMIN_SESSION_PREFIX + value)) {
-    throw new Error('Sesi admin tidak valid atau sudah berakhir. Silakan login kembali.');
+  const cached = value ? CacheService.getScriptCache().get(SESSION_PREFIX + value) : '';
+  if (!cached) throw new Error('Sesi tidak valid atau sudah berakhir. Silakan login kembali.');
+  const session = JSON.parse(cached);
+  if (requiredType && session.accountType !== requiredType) throw new Error('Akses admin diperlukan.');
+  return session;
+}
+
+function findUserByNis_(nis) {
+  const sheet = getSpreadsheet_().getSheetByName(SHEET_NAMES.users);
+  if (!sheet || sheet.getLastRow() < 2) return null;
+  const values = sheet.getDataRange().getValues();
+  for (let row = 1; row < values.length; row += 1) {
+    if (String(values[row][0] || '').trim() === String(nis || '').trim()) {
+      return { nis: String(values[row][0] || ''), name: String(values[row][1] || ''), passwordHash: String(values[row][2] || ''), className: String(values[row][3] || '') };
+    }
   }
+  return null;
+}
+
+function publicUser_(user) {
+  return { accountType: user.accountType, username: user.username || '', nis: user.nis || '', name: user.name, className: user.className || '' };
+}
+
+function ensureUserHeaders_(sheet) {
+  if (sheet.getLastRow() === 0) {
+    sheet.getRange(1, 1, 1, USER_HEADERS.length).setValues([USER_HEADERS]);
+    return;
+  }
+  const currentHeaders = sheet.getRange(1, 1, 1, Math.max(sheet.getLastColumn(), USER_HEADERS.length)).getValues()[0].map(String);
+  if (USER_HEADERS.every(function(header, index) { return currentHeaders[index] === header; })) return;
+  const oldHeaders = currentHeaders.filter(function(header) { return header; });
+  const rows = sheet.getLastRow() > 1 ? sheet.getRange(2, 1, sheet.getLastRow() - 1, oldHeaders.length).getValues() : [];
+  const migratedRows = rows.map(function(row) {
+    const oldUser = {};
+    oldHeaders.forEach(function(header, index) { oldUser[header] = row[index]; });
+    return USER_HEADERS.map(function(header) {
+      if (header === 'name') return oldUser.name || '';
+      if (header === 'className') return oldUser.className || '';
+      if (header === 'createdAt') return oldUser.createdAt || '';
+      return '';
+    });
+  });
+  sheet.clearContents();
+  sheet.getRange(1, 1, 1, USER_HEADERS.length).setValues([USER_HEADERS]);
+  if (migratedRows.length) sheet.getRange(2, 1, migratedRows.length, USER_HEADERS.length).setValues(migratedRows);
+}
+
+function ensureReportHeaders_(sheet) {
+  const currentHeaders = sheet.getRange(1, 1, 1, Math.max(sheet.getLastColumn(), REPORT_HEADERS.length)).getValues()[0].map(String);
+  if (REPORT_HEADERS.every(function(header, index) { return currentHeaders[index] === header; })) return;
+  const oldHeaders = currentHeaders.filter(function(header) { return header; });
+  const rows = sheet.getLastRow() > 1 ? sheet.getRange(2, 1, sheet.getLastRow() - 1, oldHeaders.length).getValues() : [];
+  const migratedRows = rows.map(function(row) {
+    const oldReport = {};
+    oldHeaders.forEach(function(header, index) { oldReport[header] = row[index]; });
+    return REPORT_HEADERS.map(function(header) { return oldReport[header] || ''; });
+  });
+  sheet.clearContents();
+  sheet.getRange(1, 1, 1, REPORT_HEADERS.length).setValues([REPORT_HEADERS]);
+  if (migratedRows.length) sheet.getRange(2, 1, migratedRows.length, REPORT_HEADERS.length).setValues(migratedRows);
 }
