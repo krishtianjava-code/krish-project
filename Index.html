@@ -6,10 +6,11 @@
   <title>Lost &amp; Found Sekolah</title>
   <style>
     * { box-sizing: border-box; }
-    body { margin: 0; color: #172033; background: #f4f7fb; font-family: Arial, Helvetica, sans-serif; }
+    html, body { width: 100%; min-width: 0; overflow-x: hidden; }
+    body { margin: 0; color: #172033; background: #f4f7fb; font-family: Arial, Helvetica, sans-serif; -webkit-text-size-adjust: 100%; }
     button, input, select, textarea { font: inherit; }
     button { cursor: pointer; }
-    .app { display: none; max-width: 1100px; min-height: 100vh; margin: auto; background: #f4f7fb; }
+    .app { display: none; width: 100%; max-width: 1100px; min-height: 100vh; margin: auto; background: #f4f7fb; }
     header { padding: 22px 20px; color: white; background: #1769e0; border-radius: 0 0 24px 24px; }
     header h1 { margin: 0 0 6px; font-size: 25px; }
     header p { margin: 0; opacity: .9; }
@@ -17,7 +18,7 @@
     .hero { margin-bottom: 20px; padding: 24px; background: linear-gradient(135deg, #dcecff, #eef6ff); border-radius: 22px; }
     .hero h2 { margin: 0 0 8px; font-size: 28px; }
     .hero p { max-width: 690px; margin: 0; color: #506078; line-height: 1.5; }
-    .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+    .actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 20px 0; }
     .btn { border: 0; border-radius: 14px; padding: 14px 16px; font-weight: 700; }
     .primary { color: #fff; background: #1769e0; }
     .secondary { color: #1769e0; background: #fff; border: 1px solid #d7e2f2; }
@@ -28,14 +29,14 @@
     .filters { display: flex; gap: 8px; overflow: auto; margin-bottom: 20px; }
     .filter { white-space: nowrap; padding: 9px 14px; color: #172033; border: 1px solid #d7e0ed; border-radius: 999px; background: #fff; }
     .filter.active { color: #fff; border-color: #1769e0; background: #1769e0; }
-    .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
+    .stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-bottom: 25px; }
     .stat { padding: 18px; background: #fff; border-radius: 17px; box-shadow: 0 4px 15px #1720330d; }
     .stat strong { display: block; margin-top: 5px; font-size: 27px; }
     .section-title { display: flex; justify-content: space-between; align-items: center; margin: 20px 0 12px; }
     .section-title h3 { margin: 0; font-size: 20px; }
     .count { color: #69758a; font-size: 13px; }
-    .cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-    .card { display: flex; gap: 14px; padding: 16px; background: #fff; border-radius: 18px; box-shadow: 0 4px 15px #1720330d; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); gap: 12px; }
+    .card { display: flex; min-width: 0; gap: 14px; padding: 16px; background: #fff; border-radius: 18px; box-shadow: 0 4px 15px #1720330d; }
     .card-photo, .photo-placeholder { width: 104px; height: 104px; flex: none; border-radius: 15px; }
     .card-photo { display: block; object-fit: cover; background: #eef4ff; }
     .photo-placeholder { display: grid; place-items: center; padding: 8px; color: #69758a; text-align: center; background: #eef4ff; font-size: 12px; }
@@ -51,7 +52,7 @@
     .empty { grid-column: 1 / -1; padding: 35px; color: #69758a; text-align: center; background: #fff; border-radius: 18px; }
     dialog { width: min(560px, calc(100% - 28px)); padding: 0; border: 0; border-radius: 22px; box-shadow: 0 20px 60px #0003; }
     dialog::backdrop { background: #0007; }
-    .modal { padding: 22px; }
+    .modal { width: 100%; max-width: 100%; padding: 22px; }
     .modal h2 { margin: 0 0 18px; }
     .field { margin-bottom: 14px; }
     .field label { display: block; margin-bottom: 7px; font-weight: 700; font-size: 14px; }
@@ -73,7 +74,7 @@
     .details { width: min(620px, calc(100% - 28px)); }
     .detail-content p { margin: 8px 0; line-height: 1.5; }
     .detail-photo { width: 100%; max-height: 300px; object-fit: contain; border-radius: 14px; background: #eef4ff; }
-    @media (max-width: 700px) { .cards, .actions { grid-template-columns: 1fr; } .admin-form { grid-template-columns: 1fr; } main { padding: 15px; } header { border-radius: 0 0 18px 18px; } .card-photo, .photo-placeholder { width: 86px; height: 86px; } }
+    @media (max-width: 760px) { .actions, .stats { grid-template-columns: 1fr; } .admin-form { grid-template-columns: 1fr; } main { padding: 15px; } header { padding: 18px 15px; border-radius: 0 0 18px 18px; } header h1 { padding-right: 70px; font-size: 21px; } .hero { padding: 18px; border-radius: 17px; } .hero h2 { font-size: 23px; } .card { display: block; } .card-photo, .photo-placeholder { width: 100%; height: min(48vw, 190px); margin-bottom: 12px; } .card-actions { flex-wrap: wrap; } .card-actions button { flex: 1 1 auto; min-height: 38px; } .section-title { align-items: flex-start; gap: 8px; } .section-title h3 { font-size: 18px; } .login-box { padding: 22px; } }
   </style>
 </head>
 <body>
