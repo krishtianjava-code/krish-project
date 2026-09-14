@@ -4,8 +4,11 @@ const SHEET_NAMES = {
 };
 
 const PHOTO_FOLDER_PROPERTY = 'PHOTO_FOLDER_ID';
-const TEMP_ACCESS_PIN = '7392';
-const ACCESS_ROLES = ['Guru', 'Admin', 'Siswa'];
+const ADMIN_USERNAME_PROPERTY = 'ADMIN_USERNAME';
+const ADMIN_PASSWORD_HASH_PROPERTY = 'ADMIN_PASSWORD_HASH';
+const ADMIN_SESSION_PREFIX = 'ADMIN_SESSION_';
+const ADMIN_SESSION_SECONDS = 21600;
+const ACCESS_ROLES = ['Guru', 'Penemu', 'Siswa'];
 const PUBLIC_STATUS_LABELS = {
   open: 'Belum diambil',
   done: 'Sudah diambil'
@@ -33,7 +36,40 @@ function setupApp() {
   return { spreadsheetUrl: spreadsheet.getUrl(), message: 'Database siap digunakan.' };
 }
 
-function getAppData(filters) {
+function setAdminCredentials_(username, password) {
+  const safeUsername = String(username || '').trim();
+  const safePassword = String(password || '');
+  if (!safeUsername || safeUsername.length > 100) throw new Error('Username admin tidak valid.');
+  if (safePassword.length < 8) throw new Error('Password admin minimal 8 karakter.');
+  PropertiesService.getScriptProperties().setProperties({
+    ADMIN_USERNAME: safeUsername,
+    ADMIN_PASSWORD_HASH: hashPassword_(safePassword)
+  });
+  return 'Kredensial admin berhasil disimpan.';
+}
+
+function loginAdmin(username, password) {
+  const properties = PropertiesService.getScriptProperties();
+  const configuredUsername = properties.getProperty(ADMIN_USERNAME_PROPERTY);
+  const configuredHash = properties.getProperty(ADMIN_PASSWORD_HASH_PROPERTY);
+  if (!configuredUsername || !configuredHash) {
+    throw new Error('Login admin belum dikonfigurasi. Jalankan setAdminCredentials_ dari editor Apps Script.');
+  }
+  if (String(username || '').trim() !== configuredUsername || hashPassword_(password) !== configuredHash) {
+    throw new Error('Username atau password admin salah.');
+  }
+  const token = Utilities.getUuid();
+  CacheService.getScriptCache().put(ADMIN_SESSION_PREFIX + token, configuredUsername, ADMIN_SESSION_SECONDS);
+  return { token: token, username: configuredUsername };
+}
+
+function logoutAdmin(token) {
+  if (token) CacheService.getScriptCache().remove(ADMIN_SESSION_PREFIX + String(token));
+  return { loggedOut: true };
+}
+
+function getAppData(token, filters) {
+  requireAdmin_(token);
   setupApp();
   const reports = readReports_();
   const safeFilters = filters || {};
@@ -63,10 +99,11 @@ function getAppData(filters) {
   };
 }
 
-function saveReport(payload) {
+function saveReport(token, payload) {
+  requireAdmin_(token);
   setupApp();
   validateReport_(payload);
-  validateAccess_(payload.accessRole, payload.type, 'create', payload.accessPin);
+  validateAccess_(payload.accessRole, payload.type, 'create');
   const now = new Date().toISOString();
   const photoUrl = payload.photoData
     ? uploadPhoto_(payload.photoData, payload.photoName, payload.type)
@@ -93,10 +130,11 @@ function saveReport(payload) {
   return { message: 'Laporan berhasil dikirim.', report: report };
 }
 
-function updateReport(id, payload) {
+function updateReport(token, id, payload) {
+  requireAdmin_(token);
   setupApp();
   validateReport_(payload);
-  validateAccess_(payload.accessRole, payload.type, 'edit', payload.accessPin);
+  validateAccess_(payload.accessRole, payload.type, 'edit');
   const sheet = getSpreadsheet_().getSheetByName(SHEET_NAMES.reports);
   const values = sheet.getDataRange().getValues();
   const idColumn = REPORT_HEADERS.indexOf('id');
@@ -139,10 +177,12 @@ function uploadPhoto_(dataUrl, originalName, reportType) {
   return 'https://drive.google.com/uc?export=view&id=' + file.getId();
 }
 
-function updateReportStatus(id, status, actorName, note, actorRole) {
+function updateReportStatus(token, id, status, actorName, note, actorRole) {
+  requireAdmin_(token);
   setupApp();
   const allowedStatuses = ['Dilaporkan', 'Diproses', 'Selesai'];
   if (allowedStatuses.indexOf(status) === -1) throw new Error('Status tidak valid.');
+  if (actorRole !== 'Guru') throw new Error('Hanya Guru yang dapat mengubah status laporan.');
   if (!clean_(actorName)) throw new Error('Nama pengubah wajib diisi.');
 
   const sheet = getSpreadsheet_().getSheetByName(SHEET_NAMES.reports);
@@ -151,36 +191,12 @@ function updateReportStatus(id, status, actorName, note, actorRole) {
   for (let row = 1; row < values.length; row += 1) {
     if (String(values[row][idColumn]) === String(id)) {
       const report = rowToReport_(values[row]);
-      validateAccess_(actorRole, report.type, 'status', arguments[5]);
       report.updatedAt = new Date().toISOString();
       report.status = status;
       report.notes = clean_(note);
       if (status === 'Selesai') report.claimedBy = clean_(actorName);
       sheet.getRange(row + 1, 1, 1, REPORT_HEADERS.length).setValues([reportToRow_(report)]);
       return { message: 'Status laporan diperbarui.', report: report };
-    }
-  }
-  throw new Error('Laporan tidak ditemukan.');
-}
-
-function verifyAccess(role, accessPin) {
-  if (['Guru', 'Admin'].indexOf(role) !== -1) validatePin_(accessPin);
-  else if (role !== 'Siswa') throw new Error('Peran akses tidak valid.');
-  return { valid: true };
-}
-
-function deleteReport(id, actorRole, accessPin) {
-  setupApp();
-  const sheet = getSpreadsheet_().getSheetByName(SHEET_NAMES.reports);
-  const values = sheet.getDataRange().getValues();
-  const idColumn = REPORT_HEADERS.indexOf('id');
-  for (let row = 1; row < values.length; row += 1) {
-    if (String(values[row][idColumn]) === String(id)) {
-      const report = rowToReport_(values[row]);
-      validateAccess_(actorRole, report.type, 'delete', accessPin);
-      trashPhoto_(report.photoUrl);
-      sheet.deleteRow(row + 1);
-      return { message: 'Laporan berhasil dihapus.' };
     }
   }
   throw new Error('Laporan tidak ditemukan.');
@@ -231,14 +247,16 @@ function validateReport_(payload) {
     });
 }
 
-function validateAccess_(role, reportType, action, accessPin) {
+function validateAccess_(role, reportType, action) {
   if (ACCESS_ROLES.indexOf(role) === -1) throw new Error('Peran akses tidak valid.');
+  if (action === 'create' && role === 'Penemu' && reportType !== 'Temuan') {
+    throw new Error('Penemu hanya dapat membuat laporan barang temuan.');
+  }
   if (action === 'create' && role === 'Siswa' && reportType !== 'Hilang') {
     throw new Error('Siswa hanya dapat membuat laporan barang hilang.');
   }
-  if (['Guru', 'Admin'].indexOf(role) !== -1) validatePin_(accessPin);
-  if (['edit', 'delete', 'status'].indexOf(action) !== -1 && role === 'Siswa') {
-    throw new Error('Siswa tidak dapat mengubah laporan.');
+  if (action === 'edit' && role !== 'Guru' && (role !== 'Penemu' || reportType !== 'Temuan')) {
+    throw new Error('Peran ini tidak dapat mengubah laporan tersebut.');
   }
 }
 
@@ -246,20 +264,21 @@ function cleanRole_(role) {
   return ACCESS_ROLES.indexOf(role) === -1 ? 'Siswa' : role;
 }
 
-function validatePin_(accessPin) {
-  if (String(accessPin || '') !== TEMP_ACCESS_PIN) throw new Error('PIN Guru/Admin salah.');
-}
-
-function trashPhoto_(photoUrl) {
-  const match = String(photoUrl || '').match(/[?&]id=([^&]+)/) || String(photoUrl || '').match(/\/d\/([^/]+)/);
-  if (!match) return;
-  try {
-    DriveApp.getFileById(decodeURIComponent(match[1])).setTrashed(true);
-  } catch (error) {
-    // Laporan tetap dapat dihapus meskipun foto sudah tidak tersedia.
-  }
-}
-
 function clean_(value) {
   return String(value == null ? '' : value).trim().slice(0, 500);
+}
+
+function hashPassword_(password) {
+  const digest = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, String(password || ''), Utilities.Charset.UTF_8);
+  return digest.map(function(byte) {
+    const value = byte < 0 ? byte + 256 : byte;
+    return ('0' + value.toString(16)).slice(-2);
+  }).join('');
+}
+
+function requireAdmin_(token) {
+  const value = String(token || '');
+  if (!value || !CacheService.getScriptCache().get(ADMIN_SESSION_PREFIX + value)) {
+    throw new Error('Sesi admin tidak valid atau sudah berakhir. Silakan login kembali.');
+  }
 }
