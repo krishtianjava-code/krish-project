@@ -8,7 +8,7 @@ const ADMIN_USERNAME_PROPERTY = 'ADMIN_USERNAME';
 const ADMIN_PASSWORD_HASH_PROPERTY = 'ADMIN_PASSWORD_HASH';
 const SESSION_PREFIX = 'APP_SESSION_';
 const SESSION_SECONDS = 21600;
-const USER_HEADERS = ['nis', 'name', 'passwordHash', 'className', 'createdAt'];
+const USER_HEADERS = ['nis', 'name', 'passwordHash', 'className', 'role', 'createdAt'];
 const PUBLIC_STATUS_LABELS = {
   open: 'Belum diambil',
   done: 'Sudah diambil'
@@ -73,7 +73,7 @@ function loginUser(username, password) {
   } else {
     user = findUserByLogin_(login);
     if (!user || hashPassword_(secret) !== user.passwordHash) throw new Error('NIS/username atau password salah.');
-    user.accountType = 'siswa';
+    user.accountType = user.role || 'siswa';
     user.username = user.name;
   }
   const token = Utilities.getUuid();
@@ -90,21 +90,30 @@ function logoutUser(token) {
   return { loggedOut: true };
 }
 
-function registerStudent(token, payload) {
-  const session = requireSession_(token, 'admin');
-  if (!session) throw new Error('Hanya admin yang dapat mendaftarkan siswa.');
+function registerMember(token, payload) {
+  const session = requireSession_(token);
   setupApp();
+  const role = clean_(payload && payload.role).toLowerCase();
   const nis = clean_(payload && payload.nis);
   const name = clean_(payload && payload.name);
   const className = clean_(payload && payload.className);
   const password = String(payload && payload.password || '');
-  if (!nis || !name || !className || password.length < 6) {
-    throw new Error('NIS, nama, kelas, dan password minimal 6 karakter wajib diisi.');
+  if (['siswa', 'guru', 'admin'].indexOf(role) === -1) throw new Error('Jenis anggota tidak valid.');
+  if (session.accountType !== 'admin' && session.accountType !== 'guru') {
+    throw new Error('Hanya guru atau admin yang dapat menambahkan anggota.');
   }
-  if (findUserByLogin_(nis)) throw new Error('NIS tersebut sudah terdaftar.');
-  if (findUserByName_(name)) throw new Error('Nama siswa tersebut sudah terdaftar.');
-  getSpreadsheet_().getSheetByName(SHEET_NAMES.users).appendRow([nis, name, hashPassword_(password), className, new Date().toISOString()]);
-  return { message: 'Akun siswa berhasil didaftarkan.', student: { nis: nis, name: name, className: className } };
+  if (session.accountType === 'guru' && role !== 'siswa') {
+    throw new Error('Guru hanya dapat menambahkan siswa.');
+  }
+  if (!name || password.length < 6 || (role === 'siswa' && (!nis || !className))) {
+    throw new Error(role === 'siswa'
+      ? 'NIS, nama, kelas, dan password minimal 6 karakter wajib diisi.'
+      : 'Nama dan password minimal 6 karakter wajib diisi.');
+  }
+  if (nis && findUserByLogin_(nis)) throw new Error('NIS/username tersebut sudah terdaftar.');
+  if (findUserByName_(name)) throw new Error('Nama anggota tersebut sudah terdaftar.');
+  getSpreadsheet_().getSheetByName(SHEET_NAMES.users).appendRow([nis, name, hashPassword_(password), className, role, new Date().toISOString()]);
+  return { message: 'Akun ' + role + ' berhasil didaftarkan.', member: { nis: nis, name: name, className: className, role: role } };
 }
 
 function listStudents(token) {
@@ -113,7 +122,7 @@ function listStudents(token) {
   const sheet = getSpreadsheet_().getSheetByName(SHEET_NAMES.users);
   if (!sheet || sheet.getLastRow() < 2) return [];
   return sheet.getDataRange().getValues().slice(1).map(function(row) {
-    return { nis: String(row[0] || ''), name: String(row[1] || ''), className: String(row[3] || '') };
+    return { nis: String(row[0] || ''), name: String(row[1] || ''), className: String(row[3] || ''), role: String(row[4] || 'siswa') };
   }).filter(function(student) { return student.nis; });
 }
 
@@ -322,7 +331,7 @@ function findUserByLogin_(login) {
     const nis = String(values[row][0] || '').trim();
     const name = String(values[row][1] || '').trim();
     if (nis.toLowerCase() === normalizedLogin || name.toLowerCase() === normalizedLogin) {
-      return { nis: String(values[row][0] || ''), name: String(values[row][1] || ''), passwordHash: String(values[row][2] || ''), className: String(values[row][3] || '') };
+      return { nis: String(values[row][0] || ''), name: String(values[row][1] || ''), passwordHash: String(values[row][2] || ''), className: String(values[row][3] || ''), role: String(values[row][4] || 'siswa').toLowerCase() };
     }
   }
   return null;
@@ -356,10 +365,8 @@ function ensureUserHeaders_(sheet) {
     const oldUser = {};
     oldHeaders.forEach(function(header, index) { oldUser[header] = row[index]; });
     return USER_HEADERS.map(function(header) {
-      if (header === 'name') return oldUser.name || '';
-      if (header === 'className') return oldUser.className || '';
-      if (header === 'createdAt') return oldUser.createdAt || '';
-      return '';
+      if (header === 'role') return oldUser.role || 'siswa';
+      return oldUser[header] || '';
     });
   });
   sheet.clearContents();

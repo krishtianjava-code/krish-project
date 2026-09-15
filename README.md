@@ -10,8 +10,9 @@ Aplikasi web Google Apps Script untuk laporan barang hilang dan temuan di sekola
 - Filter jenis laporan dan status `Belum diambil` atau `Sudah diambil`.
 - Penyimpanan otomatis ke Google Sheets.
 - Status internal laporan: `Dilaporkan`, `Diproses`, dan `Selesai`, ditampilkan kepada pengguna sebagai `Belum diambil` dan `Sudah diambil`.
-- Login menggunakan username admin atau NIS/nama siswa dengan sesi server sementara.
-- Admin dapat mendaftarkan akun siswa berisi NIS, nama, password, dan kelas. Data tersimpan di sheet `Pengguna`.
+- Login menggunakan username admin/guru atau NIS/nama siswa dengan sesi server sementara.
+- Guru dan admin dapat membuka menu `Tambah Anggota`. Guru hanya dapat menambahkan siswa, sedangkan admin dapat menambahkan siswa, guru, dan admin.
+- Data akun tersimpan di sheet `Pengguna` dengan kolom peran `siswa`, `guru`, atau `admin`.
 - Identitas nama, NIS, dan kelas pelapor diambil otomatis dari akun yang sedang login.
 - Detail laporan dapat dibuka dari tombol `Detail` pada setiap laporan.
 - Tampilan responsif untuk HP dan komputer.
@@ -37,7 +38,7 @@ Foto yang diunggah disimpan pada folder Drive `TemuKembali - Foto Laporan`. Saat
 ## Catatan operasional
 
 - Semua fitur aplikasi membutuhkan sesi login. Sesi berakhir setelah sekitar 6 jam atau ketika pengguna memilih `Keluar`. Token sesi disimpan di browser agar halaman tetap login setelah di-refresh; password tidak disimpan.
-- Setelah login sebagai admin, gunakan panel `Daftarkan NIS Siswa` untuk membuat akun siswa. Nama siswa menjadi username dan harus unik, sehingga siswa dapat masuk menggunakan NIS atau nama tersebut.
+- Setelah login sebagai guru atau admin, gunakan menu `Tambah Anggota`. Nama anggota menjadi username dan harus unik; siswa juga dapat masuk menggunakan NIS.
 - Admin dapat mengganti password admin dengan menjalankan `setAdminCredentials_('admin', 'password-baru')` dari editor Apps Script.
 - Tombol `Tandai selesai` hanya tersedia untuk admin.
 - Deployment disarankan memakai akses terbatas domain sekolah agar pemilihan peran dapat dikendalikan.
