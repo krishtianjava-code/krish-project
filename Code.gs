@@ -10,6 +10,7 @@ const SESSION_PREFIX = 'APP_SESSION_';
 const SESSION_SECONDS = 21600;
 const USER_HEADERS = ['nis', 'name', 'passwordHash', 'className', 'role', 'createdAt'];
 const CLASS_OPTIONS = ['X-A', 'X-B', 'X-C', 'X-D', 'X-E', 'X-F', 'X-G', 'X-H', 'X-I', 'X-J', 'X-K', 'X-L', 'XI-A', 'XI-B', 'XI-C', 'XI-D', 'XI-E', 'XI-F', 'XI-G', 'XI-H', 'XI-I', 'XI-J', 'XI-K', 'XI-L', 'XII-A', 'XII-B', 'XII-C', 'XII-D', 'XII-E', 'XII-F', 'XII-G', 'XII-H', 'XII-I', 'XII-J', 'XII-K', 'XII-L'];
+const REPORT_CATEGORIES = ['Elektronik', 'Pakaian', 'Alat Tulis', 'Uang', 'Lainnya'];
 const PUBLIC_STATUS_LABELS = {
   open: 'Belum diambil',
   done: 'Sudah diambil'
@@ -18,7 +19,7 @@ const PUBLIC_STATUS_LABELS = {
 const REPORT_HEADERS = [
   'id', 'createdAt', 'updatedAt', 'type', 'title', 'description',
   'location', 'dateFoundOrLost', 'reporterName', 'reporterClass',
-  'reporterNis', 'reporterRole', 'contact', 'status', 'photoUrl', 'claimedBy', 'notes'
+  'reporterNis', 'reporterRole', 'contact', 'status', 'photoUrl', 'claimedBy', 'notes', 'category', 'moneyAmount'
 ];
 
 function doGet() {
@@ -240,7 +241,7 @@ function getAppData(token, filters) {
   });
 
   return {
-    reports: visibleReports,
+    reports: visibleReports.map(function(report) { return reportForViewer_(report, requireSession_(token)); }),
     stats: {
       total: reports.length,
       open: reports.filter(function(item) { return item.status !== 'Selesai'; }).length,
@@ -258,7 +259,7 @@ function getMyReports(token) {
       (!session.nis && report.reporterName === session.name);
   });
   return {
-    reports: reports,
+    reports: reports.map(function(report) { return reportForViewer_(report, session); }),
     stats: {
       total: reports.length,
       open: reports.filter(function(item) { return item.status !== 'Selesai'; }).length,
@@ -281,6 +282,8 @@ function saveReport(token, payload) {
     createdAt: now,
     updatedAt: now,
     type: payload.type,
+    category: clean_(payload.category),
+    moneyAmount: payload.category === 'Uang' ? clean_(payload.moneyAmount) : '',
     title: clean_(payload.title),
     description: clean_(payload.description),
     location: clean_(payload.location),
@@ -288,7 +291,7 @@ function saveReport(token, payload) {
     reporterName: session.name,
     reporterClass: session.className || 'Admin',
     reporterNis: session.nis || '',
-    reporterRole: session.accountType === 'admin' ? 'Admin' : 'Siswa',
+    reporterRole: session.accountType.charAt(0).toUpperCase() + session.accountType.slice(1),
     contact: clean_(payload.contact),
     status: 'Dilaporkan',
     photoUrl: photoUrl,
@@ -312,6 +315,8 @@ function updateReport(token, id, payload) {
       if (session.accountType !== 'admin' && report.reporterNis !== session.nis) throw new Error('Anda hanya dapat mengubah laporan sendiri.');
       report.updatedAt = new Date().toISOString();
       report.type = payload.type;
+      report.category = clean_(payload.category);
+      report.moneyAmount = payload.category === 'Uang' ? clean_(payload.moneyAmount) : '';
       report.title = clean_(payload.title);
       report.description = clean_(payload.description);
       report.location = clean_(payload.location);
@@ -404,12 +409,30 @@ function reportToRow_(report) {
   return REPORT_HEADERS.map(function(header) { return report[header] || ''; });
 }
 
+function reportForViewer_(report, session) {
+  const safeReport = Object.assign({}, report);
+  const isMoneyFound = report.category === 'Uang' && report.type === 'Temuan';
+  const isOwner = (session.nis && report.reporterNis === session.nis) ||
+    (!session.nis && report.reporterName === session.name);
+  if (isMoneyFound && session.accountType !== 'admin' && session.accountType !== 'guru' && !isOwner) {
+    safeReport.moneyAmount = '';
+  }
+  return safeReport;
+}
+
 function validateReport_(payload) {
   if (!payload || ['Hilang', 'Temuan'].indexOf(payload.type) === -1) throw new Error('Jenis laporan tidak valid.');
-  ['title', 'description', 'location', 'dateFoundOrLost', 'contact']
+  if (REPORT_CATEGORIES.indexOf(clean_(payload.category)) === -1) throw new Error('Kategori laporan tidak valid.');
+  ['title', 'location', 'dateFoundOrLost', 'contact']
     .forEach(function(field) {
       if (!clean_(payload[field])) throw new Error('Kolom ' + field + ' wajib diisi.');
     });
+  if (payload.category === 'Uang') {
+    const amount = Number(payload.moneyAmount);
+    if (!isFinite(amount) || amount <= 0) throw new Error('Nominal uang harus lebih besar dari 0.');
+  } else if (!clean_(payload.description)) {
+    throw new Error('Kolom deskripsi wajib diisi.');
+  }
 }
 
 function clean_(value) {

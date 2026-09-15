@@ -5,6 +5,8 @@ Aplikasi web Google Apps Script untuk laporan barang hilang dan temuan di sekola
 ## Fitur
 
 - Form laporan barang hilang/temuan dengan upload foto.
+- Kategori laporan `Elektronik`, `Pakaian`, `Alat Tulis`, `Uang`, atau `Lainnya`.
+- Untuk kategori `Uang`, form memakai input nominal. Nominal temuan uang hanya terlihat oleh pelapor, guru, dan admin; nominal uang hilang terlihat oleh semua pengguna.
 - Dashboard jumlah laporan, laporan `Belum diambil`, temuan aktif, dan laporan `Sudah diambil`.
 - Pencarian berdasarkan nama barang, lokasi, deskripsi, atau pelapor.
 - Filter jenis laporan dan status `Belum diambil` atau `Sudah diambil`.
