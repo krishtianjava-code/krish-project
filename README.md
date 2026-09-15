@@ -14,6 +14,7 @@ Aplikasi web Google Apps Script untuk laporan barang hilang dan temuan di sekola
 - Guru dan admin dapat membuka menu `Tambah Anggota`. Guru hanya dapat menambahkan siswa, sedangkan admin dapat menambahkan siswa, guru, dan admin.
 - Data akun tersimpan di sheet `Pengguna` dengan kolom peran `siswa`, `guru`, atau `admin`.
 - Identitas nama, NIS, dan kelas pelapor diambil otomatis dari akun yang sedang login.
+- Halaman profil menampilkan identitas pengguna, ringkasan aktivitas, dan riwayat laporan milik pengguna tersebut.
 - Detail laporan dapat dibuka dari tombol `Detail` pada setiap laporan.
 - Tampilan responsif untuk HP dan komputer.
 - Foto laporan disimpan otomatis di folder Google Drive aplikasi dan ditampilkan pada riwayat.

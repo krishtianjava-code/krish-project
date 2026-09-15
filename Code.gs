@@ -157,6 +157,24 @@ function getAppData(token, filters) {
   };
 }
 
+function getMyReports(token) {
+  const session = requireSession_(token);
+  setupApp();
+  const reports = readReports_().filter(function(report) {
+    return (session.nis && report.reporterNis === session.nis) ||
+      (!session.nis && report.reporterName === session.name);
+  });
+  return {
+    reports: reports,
+    stats: {
+      total: reports.length,
+      open: reports.filter(function(item) { return item.status !== 'Selesai'; }).length,
+      found: reports.filter(function(item) { return item.type === 'Temuan'; }).length,
+      returned: reports.filter(function(item) { return item.status === 'Selesai'; }).length
+    }
+  };
+}
+
 function saveReport(token, payload) {
   const session = requireSession_(token);
   setupApp();
