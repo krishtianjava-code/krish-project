@@ -415,7 +415,7 @@ function reportForViewer_(report, session) {
   const isOwner = (session.nis && report.reporterNis === session.nis) ||
     (!session.nis && report.reporterName === session.name);
   if (isMoneyFound && session.accountType !== 'admin' && session.accountType !== 'guru' && !isOwner) {
-    safeReport.moneyAmount = '';
+    safeReport.moneyAmount = '****';
   }
   return safeReport;
 }
