@@ -9,6 +9,7 @@ const ADMIN_PASSWORD_HASH_PROPERTY = 'ADMIN_PASSWORD_HASH';
 const SESSION_PREFIX = 'APP_SESSION_';
 const SESSION_SECONDS = 21600;
 const USER_HEADERS = ['nis', 'name', 'passwordHash', 'className', 'role', 'createdAt'];
+const CLASS_OPTIONS = ['X-A', 'X-B', 'X-C', 'X-D', 'X-E', 'X-F', 'X-G', 'X-H', 'X-I', 'X-J', 'X-K', 'X-L', 'XI-A', 'XI-B', 'XI-C', 'XI-D', 'XI-E', 'XI-F', 'XI-G', 'XI-H', 'XI-I', 'XI-J', 'XI-K', 'XI-L', 'XII-A', 'XII-B', 'XII-C', 'XII-D', 'XII-E', 'XII-F', 'XII-G', 'XII-H', 'XII-I', 'XII-J', 'XII-K', 'XII-L'];
 const PUBLIC_STATUS_LABELS = {
   open: 'Belum diambil',
   done: 'Sudah diambil'
@@ -85,6 +86,35 @@ function getCurrentUser(token) {
   return { user: publicUser_(requireSession_(token)) };
 }
 
+function changeOwnPassword(token, oldPassword, newPassword) {
+  const session = requireSession_(token);
+  const previousPassword = String(oldPassword || '');
+  const nextPassword = String(newPassword || '');
+  if (nextPassword.length < 6) throw new Error('Password baru minimal 6 karakter.');
+  if (previousPassword === nextPassword) throw new Error('Password baru harus berbeda dari password lama.');
+  const properties = PropertiesService.getScriptProperties();
+  const configuredUsername = properties.getProperty(ADMIN_USERNAME_PROPERTY);
+  if (session.accountType === 'admin' && session.username === configuredUsername && session.name === 'Administrator') {
+    if (hashPassword_(previousPassword) !== properties.getProperty(ADMIN_PASSWORD_HASH_PROPERTY)) throw new Error('Password lama salah.');
+    properties.setProperty(ADMIN_PASSWORD_HASH_PROPERTY, hashPassword_(nextPassword));
+    return { message: 'Password berhasil diubah.' };
+  }
+  setupApp();
+  const sheet = getSpreadsheet_().getSheetByName(SHEET_NAMES.users);
+  if (!sheet || sheet.getLastRow() < 2) throw new Error('Akun tidak ditemukan.');
+  const values = sheet.getDataRange().getValues();
+  for (let row = 1; row < values.length; row += 1) {
+    const sameNis = session.nis && String(values[row][0] || '').trim() === String(session.nis).trim();
+    const sameName = !session.nis && String(values[row][1] || '').trim() === String(session.name || '').trim();
+    if (sameNis || sameName) {
+      if (hashPassword_(previousPassword) !== String(values[row][2] || '')) throw new Error('Password lama salah.');
+      sheet.getRange(row + 1, 3).setValue(hashPassword_(nextPassword));
+      return { message: 'Password berhasil diubah.' };
+    }
+  }
+  throw new Error('Akun tidak ditemukan.');
+}
+
 function logoutUser(token) {
   if (token) CacheService.getScriptCache().remove(SESSION_PREFIX + String(token));
   return { loggedOut: true };
@@ -110,10 +140,73 @@ function registerMember(token, payload) {
       ? 'NIS, nama, kelas, dan password minimal 6 karakter wajib diisi.'
       : 'Nama dan password minimal 6 karakter wajib diisi.');
   }
+  if (role === 'siswa' && CLASS_OPTIONS.indexOf(className) === -1) throw new Error('Kelas siswa tidak valid.');
   if (nis && findUserByLogin_(nis)) throw new Error('NIS/username tersebut sudah terdaftar.');
   if (findUserByName_(name)) throw new Error('Nama anggota tersebut sudah terdaftar.');
   getSpreadsheet_().getSheetByName(SHEET_NAMES.users).appendRow([nis, name, hashPassword_(password), className, role, new Date().toISOString()]);
   return { message: 'Akun ' + role + ' berhasil didaftarkan.', member: { nis: nis, name: name, className: className, role: role } };
+}
+
+function listMembers(token) {
+  requireSession_(token, 'admin');
+  setupApp();
+  const sheet = getSpreadsheet_().getSheetByName(SHEET_NAMES.users);
+  const members = [];
+  if (sheet && sheet.getLastRow() >= 2) {
+    const values = sheet.getDataRange().getValues();
+    for (let row = 1; row < values.length; row += 1) {
+      if (!values[row][1]) continue;
+      members.push({
+        id: String(row + 1),
+        nis: String(values[row][0] || ''),
+        name: String(values[row][1] || ''),
+        className: String(values[row][3] || ''),
+        role: String(values[row][4] || 'siswa').toLowerCase(),
+        protected: false
+      });
+    }
+  }
+  const properties = PropertiesService.getScriptProperties();
+  const adminName = properties.getProperty(ADMIN_USERNAME_PROPERTY) || 'admin';
+  members.unshift({ id: 'primary-admin', nis: '', name: adminName, className: '', role: 'admin', protected: true });
+  return members;
+}
+
+function updateMember(token, memberId, payload) {
+  requireSession_(token, 'admin');
+  setupApp();
+  const rowNumber = parseMemberRow_(memberId);
+  const sheet = getSpreadsheet_().getSheetByName(SHEET_NAMES.users);
+  const values = sheet.getRange(rowNumber, 1, 1, USER_HEADERS.length).getValues()[0];
+  const role = String(values[4] || 'siswa').toLowerCase();
+  const nis = clean_(payload && payload.nis);
+  const name = clean_(payload && payload.name);
+  const className = clean_(payload && payload.className);
+  const password = String(payload && payload.password || '');
+  if (!name || (role === 'siswa' && (!nis || !className))) throw new Error('Data anggota belum lengkap.');
+  if (role === 'siswa' && CLASS_OPTIONS.indexOf(className) === -1) throw new Error('Kelas siswa tidak valid.');
+  if (findUserByLoginExceptRow_(nis, rowNumber)) throw new Error('NIS/username tersebut sudah terdaftar.');
+  if (findUserByNameExceptRow_(name, rowNumber)) throw new Error('Nama anggota tersebut sudah terdaftar.');
+  values[0] = nis;
+  values[1] = name;
+  values[3] = className;
+  if (password) {
+    if (password.length < 6) throw new Error('Password minimal 6 karakter.');
+    values[2] = hashPassword_(password);
+  }
+  sheet.getRange(rowNumber, 1, 1, USER_HEADERS.length).setValues([values]);
+  return { message: 'Data anggota berhasil diperbarui.' };
+}
+
+function deleteMember(token, memberId) {
+  requireSession_(token, 'admin');
+  setupApp();
+  const rowNumber = parseMemberRow_(memberId);
+  const sheet = getSpreadsheet_().getSheetByName(SHEET_NAMES.users);
+  const values = sheet.getRange(rowNumber, 1, 1, USER_HEADERS.length).getValues()[0];
+  if (String(values[1] || '').trim() === String(requireSession_(token).name || '').trim()) throw new Error('Akun yang sedang digunakan tidak dapat dihapus.');
+  sheet.deleteRow(rowNumber);
+  return { message: 'Anggota berhasil dihapus.' };
 }
 
 function listStudents(token) {
@@ -362,6 +455,38 @@ function findUserByName_(name) {
   const normalizedName = String(name || '').trim().toLowerCase();
   for (let row = 1; row < values.length; row += 1) {
     if (String(values[row][1] || '').trim().toLowerCase() === normalizedName) return true;
+  }
+  return false;
+}
+
+function parseMemberRow_(memberId) {
+  const rowNumber = Number(memberId);
+  if (!Number.isInteger(rowNumber) || rowNumber < 2) throw new Error('Anggota tidak valid.');
+  const sheet = getSpreadsheet_().getSheetByName(SHEET_NAMES.users);
+  if (!sheet || rowNumber > sheet.getLastRow()) throw new Error('Anggota tidak ditemukan.');
+  return rowNumber;
+}
+
+function findUserByLoginExceptRow_(login, excludedRow) {
+  const value = String(login || '').trim().toLowerCase();
+  if (!value) return false;
+  const sheet = getSpreadsheet_().getSheetByName(SHEET_NAMES.users);
+  if (!sheet || sheet.getLastRow() < 2) return false;
+  const values = sheet.getDataRange().getValues();
+  for (let row = 1; row < values.length; row += 1) {
+    if (row + 1 === excludedRow) continue;
+    if (String(values[row][0] || '').trim().toLowerCase() === value || String(values[row][1] || '').trim().toLowerCase() === value) return true;
+  }
+  return false;
+}
+
+function findUserByNameExceptRow_(name, excludedRow) {
+  const value = String(name || '').trim().toLowerCase();
+  const sheet = getSpreadsheet_().getSheetByName(SHEET_NAMES.users);
+  if (!sheet || sheet.getLastRow() < 2) return false;
+  const values = sheet.getDataRange().getValues();
+  for (let row = 1; row < values.length; row += 1) {
+    if (row + 1 !== excludedRow && String(values[row][1] || '').trim().toLowerCase() === value) return true;
   }
   return false;
 }
