@@ -21,6 +21,7 @@ Aplikasi web Google Apps Script untuk laporan barang hilang dan temuan di sekola
 - Halaman profil menampilkan identitas pengguna, ringkasan aktivitas, dan riwayat laporan milik pengguna tersebut.
 - Pengguna dapat mengubah password sendiri dari halaman profil dengan memasukkan password lama terlebih dahulu. Password lama yang salah akan ditolak.
 - Detail laporan dapat dibuka dari tombol `Detail` pada setiap laporan.
+- Laporan dapat dihapus oleh pembuat laporan, guru, atau admin.
 - Tampilan responsif untuk HP dan komputer.
 - Foto laporan disimpan otomatis di folder Google Drive aplikasi dan ditampilkan pada riwayat.
 

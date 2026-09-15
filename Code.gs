@@ -330,6 +330,26 @@ function updateReport(token, id, payload) {
   throw new Error('Laporan tidak ditemukan.');
 }
 
+function deleteReport(token, id) {
+  const session = requireSession_(token);
+  setupApp();
+  const sheet = getSpreadsheet_().getSheetByName(SHEET_NAMES.reports);
+  const values = sheet.getDataRange().getValues();
+  const idColumn = REPORT_HEADERS.indexOf('id');
+  for (let row = 1; row < values.length; row += 1) {
+    if (String(values[row][idColumn]) !== String(id)) continue;
+    const report = rowToReport_(values[row]);
+    const isOwner = (session.nis && report.reporterNis === session.nis) ||
+      (!session.nis && report.reporterName === session.name);
+    if (session.accountType !== 'admin' && session.accountType !== 'guru' && !isOwner) {
+      throw new Error('Anda tidak memiliki izin untuk menghapus laporan ini.');
+    }
+    sheet.deleteRow(row + 1);
+    return { message: 'Laporan berhasil dihapus.' };
+  }
+  throw new Error('Laporan tidak ditemukan.');
+}
+
 function uploadPhoto_(dataUrl, originalName, reportType) {
   const match = String(dataUrl).match(/^data:(image\/(?:jpeg|png|gif|webp));base64,([\s\S]+)$/i);
   if (!match) throw new Error('Format gambar tidak didukung. Gunakan JPG, PNG, GIF, atau WebP.');
