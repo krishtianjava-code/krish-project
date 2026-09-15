@@ -71,7 +71,7 @@
     .login-box h1 { margin: 0 0 8px; font-size: 26px; }
     .login-box p { margin: 0 0 22px; color: var(--muted); line-height: 1.5; }
     .login-error { min-height: 20px; margin-top: 10px; color: var(--danger); font-size: 13px; }
-    .logout { float: right; padding: 8px 11px; color: #fff; border: 1px solid #ffffff66; border-radius: 9px; background: transparent; font-size: 12px; }
+    .logout { width: 100%; color: var(--danger); border: 1px solid var(--danger-soft); border-radius: 12px; background: var(--surface); }
     .header-actions { display: flex; flex: none; gap: 8px; }
     .profile-button { padding: 9px 12px; color: var(--primary-dark); border: 0; border-radius: 10px; background: #fff; font-size: 12px; font-weight: 700; }
     .admin-panel { display: none; margin-bottom: 20px; padding: 18px; background: var(--surface); border: 1px solid var(--border); border-radius: 18px; }
@@ -97,6 +97,8 @@
     .profile-section-title { display: flex; justify-content: space-between; align-items: end; gap: 12px; margin-bottom: 12px; }
     .profile-section-title h3 { margin: 0; font-size: 20px; }
     .profile-section-title p { margin: 0; color: var(--muted); font-size: 13px; }
+    .profile-footer { margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .profile-logout { max-width: 220px; padding: 12px 16px; font-weight: 700; }
     @media (max-width: 760px) { .actions, .stats { grid-template-columns: 1fr; } .admin-form, .member-form { grid-template-columns: 1fr; } .member-form .member-submit { grid-column: auto; } main { padding: 15px; } header { padding: 18px 15px; border-radius: 0 0 18px 18px; } header h1 { padding-right: 0; font-size: 21px; } .header-top { align-items: flex-start; } .header-actions { flex-direction: column; } .hero { padding: 18px; border-radius: 17px; } .hero h2 { font-size: 23px; } .card { display: block; } .card-photo, .photo-placeholder { width: 100%; height: min(48vw, 190px); margin-bottom: 12px; } .card-actions { flex-wrap: wrap; } .card-actions button { flex: 1 1 auto; min-height: 38px; } .section-title { align-items: flex-start; gap: 8px; } .section-title h3 { font-size: 18px; } .login-box { padding: 22px; } .profile-page { padding: 15px; } .profile-hero { align-items: flex-start; padding: 20px; } .profile-info { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -112,7 +114,7 @@
     </form>
   </section>
   <div class="app">
-    <header><div class="header-top"><div><h1>🔎 Lost and Found SMANSIX</h1><p>Platform untuk melaporkan dan menemukan barang di sekolah.</p></div><div class="header-actions"><button class="profile-button" onclick="showProfile()">👤 Profil</button><button class="logout" onclick="logout()">Keluar</button></div></div></header>
+    <header><div class="header-top"><div><h1>🔎 Lost and Found SMANSIX</h1><p>Platform untuk melaporkan dan menemukan barang di sekolah.</p></div><div class="header-actions"><button class="profile-button" onclick="showProfile()">👤 Profil</button></div></div></header>
     <main id="homePage">
       <section class="hero"><h2>Barang hilang? Jangan panik.</h2><p>Laporkan barang yang hilang atau barang yang kamu temukan agar lebih mudah dikembalikan kepada pemiliknya.</p></section>
       <div class="actions"><button class="btn primary" onclick="openReportChooser()">📝 Buat Laporan</button></div>
@@ -129,6 +131,7 @@
       <div id="profileInfo" class="profile-info"></div>
       <div class="profile-section-title"><div><h3>Riwayat Laporan Saya</h3><p>Laporan yang pernah Anda buat di aplikasi.</p></div><span id="profileReportCount" class="count"></span></div>
       <div id="profileCards" class="cards"><div class="empty">Memuat riwayat...</div></div>
+      <div class="profile-footer"><button type="button" class="btn logout profile-logout" onclick="logout()">Logout / Keluar</button></div>
     </section>
   </div>
   <dialog id="reportChoiceDialog"><div class="modal"><h2>Buat Laporan</h2><div class="report-choice"><button type="button" class="btn primary" onclick="openReportForm('Hilang')">🔴 Barang Hilang</button><button type="button" class="btn secondary" onclick="openReportForm('Temuan')">🟢 Barang Ditemukan</button></div><div class="modal-actions"><button type="button" class="btn secondary" onclick="document.getElementById('reportChoiceDialog').close()">Batal</button></div></div></dialog>
