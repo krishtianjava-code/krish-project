@@ -23,7 +23,7 @@ const REPORT_HEADERS = [
 function doGet() {
   return HtmlService.createTemplateFromFile('Index')
     .evaluate()
-    .setTitle('TemuKembali | Laporan Barang Sekolah')
+    .setTitle('Lost and Found SMANSIX')
     .addMetaTag('viewport', 'width=device-width, initial-scale=1')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
