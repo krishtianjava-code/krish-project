@@ -71,13 +71,18 @@ function loginUser(username, password) {
   if (login === configuredUsername && hashPassword_(secret) === configuredHash) {
     user = { accountType: 'admin', username: configuredUsername, name: 'Administrator', className: '' };
   } else {
-    user = findUserByNis_(login);
+    user = findUserByLogin_(login);
     if (!user || hashPassword_(secret) !== user.passwordHash) throw new Error('NIS/username atau password salah.');
     user.accountType = 'siswa';
+    user.username = user.name;
   }
   const token = Utilities.getUuid();
   CacheService.getScriptCache().put(SESSION_PREFIX + token, JSON.stringify(user), SESSION_SECONDS);
   return { token: token, user: publicUser_(user) };
+}
+
+function getCurrentUser(token) {
+  return { user: publicUser_(requireSession_(token)) };
 }
 
 function logoutUser(token) {
@@ -96,7 +101,8 @@ function registerStudent(token, payload) {
   if (!nis || !name || !className || password.length < 6) {
     throw new Error('NIS, nama, kelas, dan password minimal 6 karakter wajib diisi.');
   }
-  if (findUserByNis_(nis)) throw new Error('NIS tersebut sudah terdaftar.');
+  if (findUserByLogin_(nis)) throw new Error('NIS tersebut sudah terdaftar.');
+  if (findUserByName_(name)) throw new Error('Nama siswa tersebut sudah terdaftar.');
   getSpreadsheet_().getSheetByName(SHEET_NAMES.users).appendRow([nis, name, hashPassword_(password), className, new Date().toISOString()]);
   return { message: 'Akun siswa berhasil didaftarkan.', student: { nis: nis, name: name, className: className } };
 }
@@ -307,16 +313,30 @@ function requireSession_(token, requiredType) {
   return session;
 }
 
-function findUserByNis_(nis) {
+function findUserByLogin_(login) {
   const sheet = getSpreadsheet_().getSheetByName(SHEET_NAMES.users);
   if (!sheet || sheet.getLastRow() < 2) return null;
   const values = sheet.getDataRange().getValues();
+  const normalizedLogin = String(login || '').trim().toLowerCase();
   for (let row = 1; row < values.length; row += 1) {
-    if (String(values[row][0] || '').trim() === String(nis || '').trim()) {
+    const nis = String(values[row][0] || '').trim();
+    const name = String(values[row][1] || '').trim();
+    if (nis.toLowerCase() === normalizedLogin || name.toLowerCase() === normalizedLogin) {
       return { nis: String(values[row][0] || ''), name: String(values[row][1] || ''), passwordHash: String(values[row][2] || ''), className: String(values[row][3] || '') };
     }
   }
   return null;
+}
+
+function findUserByName_(name) {
+  const sheet = getSpreadsheet_().getSheetByName(SHEET_NAMES.users);
+  if (!sheet || sheet.getLastRow() < 2) return null;
+  const values = sheet.getDataRange().getValues();
+  const normalizedName = String(name || '').trim().toLowerCase();
+  for (let row = 1; row < values.length; row += 1) {
+    if (String(values[row][1] || '').trim().toLowerCase() === normalizedName) return true;
+  }
+  return false;
 }
 
 function publicUser_(user) {
