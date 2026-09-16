@@ -1,0 +1,523 @@
+DAFTAR NAMA MURID KELAS XI SMA NEGERI 6 SEMARANG
+TAHUN PELAJARAN 2026/2027
+
+============================================================================================
+XI-A | WALI KELAS: ERNI WIDIYASTUTI,S.Pd.
+============================================================================================
+No   NIS            NISN           Nama Lengkap                       Jenis Kelamin 
+------------------------------------------------------------------------------------
+1    0103951379     0103951379     ADITIYA LUKMANUL HAKIM             Laki-laki     
+2    2025101604     0096792112     AISYAH ALUNA NASYAFA               Perempuan     
+3    20251016475    0109515530     ALDIANA MAISYA AL SOERYA           Perempuan     
+4    20251016265    0108312517     ALYSA SURYA ANINDYA                Perempuan     
+5    20251016548    0093263416     ANANDITA FADEA BILLQIS             Perempuan     
+6    20251016373    0098442665     ANDHINY MUTHMAINNAH YASMIN         Perempuan     
+7    20251016194    0099906331     AZIMA MAKKIYA NURROSYIEDA          Perempuan     
+8    20251016229    0109653851     BAGASKARA AFIANTO                  Laki-laki     
+9    20261016590    0091175770     BAYU ONIDITYA ODAM                 Laki-laki     
+10   20251016159    0102999111     DIANDRA FARADINA MEILANI           Perempuan     
+11   20251016381    0101899991     DIMAS LINTANG SAPUTRA              Laki-laki     
+12   20251016342    0107324994     ELFINA TAQWILLA AMIR               Perempuan     
+13   20251016564    3102710336     FATIMAH NASYWA SHALIHAH            Perempuan     
+14   20251016420    0109245400     GHANIA AMMARA SHAFINA AGAHRA       Perempuan     
+15   20251016453    010728487      HANAQIARA JENITA MARWABIDAH        Perempuan     
+16   20251016454    0101756988     HELZA NURMALA                      Perempuan     
+17   20251016458    0091937973     KEISYA ALMIRA SAHIRA               Perempuan     
+18   20251016459    0099249724     KEYSHA AURELLIA AZARINE            Perempuan     
+19   20251016205    0095187369     LAYYINA ILMANNAFIA                 Perempuan     
+20   20251016388    0107021549     LUTHFI FAITH RAFI SETYAWAN         Laki-laki     
+21   20251016208    0103909085     Maulana Fahri Akmal                Laki-laki     
+22   20251016495    0104832868     MEYLA KHAIRUNNISA                  Perempuan     
+23   20251016352    0102706676     MUHAMMAD HAEKAL RASENDRIYA         Laki-laki     
+24   20251016527    0097447671     MUHAMMAD RAFI NAJIHAN              Laki-laki     
+25   20251016391    0092565060     NADIA ELVA SEPTIANA AZARINE        Perempuan     
+26   20251016395    0105538024     NAYLA LABIBAH                      Perempuan     
+27   20251016465    0092742253     NURLAILA RAMADHANI                 Perempuan     
+28   20251016396    0097884917     OLIVIA ZIVANNA PUTRI AGUNG         Perempuan     
+29   20251016175    0092762327     QUEENSHA ADINDA ROSALINA           Perempuan     
+30   20251016252    0099656565     RAIHANA JIHAN ADILA                Perempuan     
+31   20251016505    0094779074     ROSYIDAH RAMADHANI                 Perempuan     
+32   20251016179    0098793677     SANI KURNIAWAN                     Laki-laki     
+33   20251016183    0104781620     SYIFANA LATHIFA                    Perempuan     
+34   20251016539    3106080198     TISHANDY CAHYA MEDINA              Perempuan     
+35   20251016185    0091691750     WIDYALAKSMANA HARISATYA PRABAMUKTI Laki-laki     
+36   20251016367    0104416843     ZELVA PRISTIKA PUTRI               Perempuan     
+Jumlah siswa: 36
+
+============================================================================================
+XI-B | WALI KELAS: SITI MAIMUNAH,S.Pd.
+============================================================================================
+No   NIS            NISN           Nama Lengkap                       Jenis Kelamin 
+------------------------------------------------------------------------------------
+1    20251016262    0097777239     AFIFAH NURUL HIKMAH                Perempuan     
+2    20251016152    0109949484     AFRIZA DWIKA RAHMA                 Perempuan     
+3    20251016372    0096344010     AIRA CAHYA AGUSTIN                 Perempuan     
+4    20251016477    0108717728     ANAYA DANNISA NAFI'A               Perempuan     
+5    20251016407    0103371569     ANGWYN KENJI KUSUMAWARDHANA WIDODO Laki-laki     
+6    20251016375    0097336154     Anugrah Rizky Dimas Putra          Laki-laki     
+7    20251016302    0104940053     Arsya Habibie Arifman              Laki-laki     
+8    20251016193    0084522832     AURA BUNGA AULIA                   Perempuan     
+9    20251016156    0104531073     BILQIS ANISA                       Perempuan     
+10   20251016378    0104595986     Dafia Azaria Safa Salsabila        Perempuan     
+11   20251016234    0101778912     ELVARETTA ALTHEA HELGA ALEXANDRINA Perempuan     
+12   20251016272    0101058293     FADLIL FATCHU ROZAQ AL ABID        Laki-laki     
+13   20251016235    0102443401     FLORENCIA ELIANA DYAH AYU ANINDITA Perempuan     
+14   20251016491    0097071171     IKBAL ABDILLAH                     Laki-laki     
+15   20251016276    0109801635     INDHARA AL AKSANSAR                Perempuan     
+16   20251016422    0104750957     INDY RAMANIYA AMANY PUTRI          Perempuan     
+17   20261117029    0096787736     JEREMY DEVID ARIANDO               Laki-laki     
+18   20251016313    0095049647     Kanza Adila Haq                    Perempuan     
+19   20251016237    0101746316     KARTIKA CAHYANING MAHADEWI         Perempuan     
+20   20251016568    0108662944     KEISYA RAHAYU PUTRI                Perempuan     
+21   20251016522    0091146806     KHAIRANA FAIRUUZ QURROTU AINII     Perempuan     
+22   20251016313    0099505718     KHALILAH DHAWINTA PUTRI            Perempuan     
+23   20251016238    0109824130     KHARISMA NILAWATI                  Perempuan     
+24   20251016239    0102857309     LEANDRA FEODORA KENZIE             Perempuan     
+25   20251016280    0092471614     MAHA SENTIAWATI                    Perempuan     
+26   20251016496    0094952899     MIRANDA LARASATI A                 Perempuan     
+27   20251016281    0098152112     MIRANTI MEDIANA MAGAS              Perempuan     
+28   20251016172    0108803130     NAYLA NAZHIRA NUHA                 Perempuan     
+29   20251016213    0093686897     NOVELIN ANGEL NUGRANTO             Perempuan     
+30   20251016575    0092202431     RAFIE MAULANA DWI SYAFIKRI         Laki-laki     
+31   20251016359    0091952440     RAIHANAH SAKHI ANINDYA YUBI        Perempuan     
+32   20251016219    0102124685     SHEKHINAH GLORY MIRACLE            Perempuan     
+33   20251016434    0099045809     SHINTA DEWI PRASETYO PUTRI         Perempuan     
+34   20251016506    0101549119     SYAFA KHOIRIL FEBRIYATI            Perempuan     
+35   20251016401    0098266697     TSAMIRA NADIA PUTRI SETIAWAN       Perempuan     
+36   20251016186    0092969561     WILY ADITYAS WIDODO                Laki-laki     
+Jumlah siswa: 36
+
+============================================================================================
+XI-C | WALI KELAS: SIGIT PANDU CAHYONO,S.Pd.,M.Pd.
+============================================================================================
+No   NIS            NISN           Nama Lengkap                         Jenis Kelamin 
+--------------------------------------------------------------------------------------
+1    20251016508    0081692768     ADYTTIA CHURNIAWAN                   Laki-laki     
+2    20251016298    0106593360     AGNES MELISSA AURELLIA               Perempuan     
+3    20251016334    0098567712     AKMAL AZVAIREL SAMPE                 Laki-laki     
+4    20251016224    0107411825     ALICIA GRACE                         Perempuan     
+5    20251016510    0095517147     ALISYA KHAIRANI SETYAWAN             Perempuan     
+6    20251016476    0106059226     ALYSA SAFA DWI CAHYANI               Perempuan     
+7    20251016478    0102128532     ANESYA MAULITHA                      Perempuan     
+8    20251016479    0096841310     ANISA OCTAVIANI                      Perempuan     
+9    20251016481    0098602411     ARJUNA FEBRIAN WIBOWO                Laki-laki     
+10   20251016340    0104062068     CANTIKA PERMATASARI                  Perempuan     
+11   20251016157    0105539762     CHIQUITA AZZAHRA WIJAYA              Perempuan     
+12   20251016196    0106758557     CHRISTABEL FITRIASYA AURELLA HIMAWAN Perempuan     
+13   20251016197    0096631699     DEBORA FRANSISCHA LAURA              Perempuan     
+14   20251016487    0101986621     DIANDRA ATHA ABIYY                   Laki-laki     
+15   20251016489    0092004687     ELIYANTA LUBNAA                      Perempuan     
+16   20251016343    0109070704     ERLANGGA RIZQI SAPUTRA               Laki-laki     
+17   20251016490    0962527282     FIRLY HIDAYANI                       Perempuan     
+18   20251016161    0109153535     GHANIA NOVITA SARI                   Perempuan     
+19   20251016345    0108085372     GHANIA SALSABILA PUTRIANDY           Perempuan     
+20   20251016201    0093916377     GRACE ANASTASYA PANJAITAN            Perempuan     
+21   20251016520    0106945788     IBRAHIM ROFIQ                        Laki-laki     
+22   20251016164    0103884387     KHAYSA ALMEERA ELQUINNOVA            Perempuan     
+23   20251016204    0105046179     KRISTANTI PRAMUSINTA                 Perempuan     
+24   20261117028    3096680333     LUQMAAN AGI NUGRAHA                  Laki-laki     
+25   20251016569    3105763196     MAHESWARA AL HABSY                   Laki-laki     
+26   20251016526    0099729867     MIRZA ARFA RAMDHANI                  Laki-laki     
+27   20251016499    0108001773     MUTIARA CITRA ANDANA                 Perempuan     
+28   20251016211    0098281171     NAJWA SETYA RABBANI                  Perempuan     
+29   20251016530    0097626327     NAUFAL AFIF MAHARDIKA                Laki-laki     
+30   20251016500    0104071579     NAYARA CALLYSTA NUANSA PUTRI         Perempuan     
+31   20251016288    0108003174     NEILA PARAMITA SYAFNEL PUTRI         Perempuan     
+32   20251016214    0094358444     NOVINCA PUTRI LARASATI               Perempuan     
+33   20251016531    0109104798     RANA NUHA TABRIZA                    Perempuan     
+34   20251016502    0106106094     RAYHAN KENZIE DIFINANDA              Laki-laki     
+35   20251016294    0107884462     SASIKIRANA PUTRI TSANY PRASTIYA      Perempuan     
+36   20251016507    0092981165     TRESYA ALLIFIA NIDA REVANA           Perempuan     
+Jumlah siswa: 36
+
+============================================================================================
+XI-D | WALI KELAS: CHOLISATUN,S.Pd.
+============================================================================================
+No   NIS            NISN           Nama Lengkap                      Jenis Kelamin 
+-----------------------------------------------------------------------------------
+1    20251016402    0106506836     AALIYA SYAHQUITA PUTRI            Perempuan     
+2    20251016474    0093146514     ABID RAFA ARRAFI                  Laki-laki     
+3    20251016296    0095556574     Achmad Sifa Alchoir               Laki-laki     
+4    20261016591    0092283763     Achmad Suffi Bachril Fanani       Laki-laki     
+5    20251016371    0095419353     AHMAD WILDAN NAJMI RAMDHANI       Laki-laki     
+6    20251016264    0103100656     AJWAREVA KIREISA KANSHA           Perempuan     
+7    20251016549    0103791587     ANUGRAH PUTRI KANAYA              Perempuan     
+8    20251016441    0108373916     ARASY KAELANO PARAMA WASTU        Laki-laki     
+9    20251016552    0096075867     ARLINA RIZKIA PUTRI               Perempuan     
+10   20251016267    0106200966     Atifa Wiria Winandita             Perempuan     
+11   20251016154    0108540860     AYU PUTRI LESTARI                 Perempuan     
+13   20251016338    0107536737     AZ-ZAIM AZKIYANO ARKANA MUCHLIS   Laki-laki     
+12   20251016339    0095526026     AZKA SHATURA ARYAWAN              Laki-laki     
+14   20251016410    0108621541     BETRIX ALMAIDAH WIBOWO            Perempuan     
+15   20251016515    0107307260     CITRA ABRA ABIA DALILA            Perempuan     
+16   20251016413    0099076903     DANI PUTRA SOMA                   Laki-laki     
+17   20251016304    0091341870     DIMAS AKBAR GHIFFARI              Laki-laki     
+18   20251016341    0102793936     DIMAS IMAM ARDYNATA               Laki-laki     
+19   20251016488    0094899511     DZAKI ABDURROHIM                  Laki-laki     
+20   20251016199    0104760823     FELICIA GRACE MELODIAVENDI        Perempuan     
+21   20251016200    0093443741     FERNANDA SYAHREZA                 Laki-laki     
+22   20251016273    0096875400     GALANG CIPTA PRAYOGA              Laki-laki     
+23   20251016240    0101101203     LESTHANIA YUDHA                   Perempuan     
+24   20251016278    0095584007     LINTANG BADAR PRATAMA             Laki-laki     
+25   20251016279    0102353319     LISDIANA RAMADHANI                Perempuan     
+26   20251016243    0095824753     LUTHFIA RAMADHANI                 Perempuan     
+27   20251016207    0102862905     MARCHELINUS EKA PRASETYA HARDJONO Laki-laki     
+28   20251016209    0009227088     MUHAMMAD DAFFA PUTRA ZAINI        Laki-laki     
+29   20251016284    0091212660     NAJWA ARKANANTA TSAQIF            Laki-laki     
+30   20251016501    0101262722     NAYSHAKYRA MARVELLINDA VARDHINI   Perempuan     
+31   20251016249    3099554419     NOVALIA SAFIRA DINATA             Perempuan     
+32   20251016289    0094292577     NOVANDA DWI PRAMESTI              Perempuan     
+33   20251016358    0102077791     RADITYA PINDITRA YUDHISTIRA       Laki-laki     
+34   20251016397    0102403555     RAHMAH MUTIARA AMALIA             Perempuan     
+35   20251016216    0091084285     RIVANO ILHAM ARYANTO              Laki-laki     
+36   20251016437    0093290743     ZAHWA NUR'AINI                    Perempuan     
+Jumlah siswa: 36
+
+============================================================================================
+XI-E | WALI KELAS: DHONI KRISTIAWAN,S.Pd.
+============================================================================================
+No   NIS            NISN           Nama Lengkap                    Jenis Kelamin 
+---------------------------------------------------------------------------------
+1    20251016297    0096168052     ADMIRALDI RAMADA SEPTIANO       Laki-laki     
+2    20251016263    3107678571     AFNANDYA ARVIANSYAH             Laki-laki     
+3    20251016301    0105507059     ARFAN RHEKA SATRIA              Laki-laki     
+4    20251016482    0098494900     ASHILAA NAJWA PRASETYA          Perempuan     
+5    20251016228    0102333143     AULIA HILALIA KHOIRUNNISA       Perempuan     
+6    20251016483    0103326876     AURELIA QUEENNARA NABILA        Perempuan     
+7    20251016376    0102450135     Ayesha Tiar Corliss             Perempuan     
+8    20251016268    0091455503     CANAYA DWI AGUSTIN              Perempuan     
+9    20251016414    0098425296     DAVA RIZKY PRANANDA             Laki-laki     
+10   20251016415    0107588046     DAVID LINGGA MAHANDIKA          Laki-laki     
+11   20251016198    0095421443     DEVDAN DANADYAKSA PUTRA PRABAWA Laki-laki     
+12   20251016160    0091739563     Dovizio Arya Vega               Laki-laki     
+13   20251016306    0095068608     EXCEL OKTAVIA CANDRA KIRANA     Perempuan     
+14   20251016563    3102849105     FAKHRY SYIHAB S                 Laki-laki     
+15   20251016417    0108900565     FATHIR RISTAN ASWAN             Laki-laki     
+16   20251016492    0098595542     Jehan Soraya                    Perempuan     
+17   20251016163    0106978013     KENZO ADI HASAN                 Laki-laki     
+18   20251016387    0091618492     KHAIRUNNISA RIZKI RAMADHANI     Perempuan     
+19   20251016347    0095805607     KHARENINA NABELLA PUTRIE        Perempuan     
+20   20251016165    0095938152     KRISHTIAN RAMA ALJAVANY         Laki-laki     
+21   20251016242    0113727295     LIRA MAULIDYA BERLY SURYADANA   Perempuan     
+22   20251016244    0106992283     MASSITOH FATWA LOKA             Perempuan     
+23   20251016524    0099594264     MAULANA SINGGIH FIRMANSYAH      Laki-laki     
+24   20251016351    0094544476     MOCHAMAD NUR ROCHIM             Laki-laki     
+25   20261117030    0109827657     MUHAMMAD JAFIR NADZIF RAMADHAN  Laki-laki     
+26   20251016167    0098267483     MUHAMMAD JAMIL AL FAQIH         Laki-laki     
+27   20251016170    0098693925     NAIRA SASKIA YUKI ARTAMEVIA     Perempuan     
+28   20251016171    0096786680     NAJWA AURA IZZATI               Perempuan     
+29   20251016287    0101118376     NAYSHA AEERA SHAZIA             Perempuan     
+30   20251016321    3093137585     PUTRI AYU PRASETYANINGSIH       Perempuan     
+31   20251016325    0107567687     RIZKI WULAN ARTIKA              Perempuan     
+32   20251016293    0097177095     RONI DWI DARMAWAN               Laki-laki     
+33   20251016180    0108742565     SAVA CASIMIRA HAIDA HERNAWATI   Perempuan     
+34   20251016471    0103535176     SHAFWAN YAFI'                   Laki-laki     
+35   20251016327    0092584275     SHERLY NAYLA PRADITA            Perempuan     
+36   20251016542    0104940553     ZHARIFAH MEYLA DEWI             Perempuan     
+Jumlah siswa: 36
+
+============================================================================================
+XI-F | WALI KELAS: HERI PURNOMO,S.Pd.,M.Pd.
+============================================================================================
+No   NIS            NISN           Nama Lengkap                   Jenis Kelamin 
+--------------------------------------------------------------------------------
+1    20251016261    0103627810     AFIFAH LADIA AMIN              Perempuan     
+2    20251016509    0093762653     ALIFIA NAURA RINASYA           Perempuan     
+3    20251016189    0098651141     AMIRIL HAKIM SANADA            Laki-laki     
+4    20251016512    0087936084     ANNASYA DINARA KARENINA MAURIN Perempuan     
+5    20251016408    0097684404     ARASKA DUBY PRASETYA           Laki-laki     
+6    20251016191    0101238173     ARCHIKA LASNATA                Laki-laki     
+7    20251016555    0104570638     AUDRA SHAFIRA                  Perempuan     
+8    20251016337    0096229057     AURA CINTA AMALIA              Perempuan     
+9    20251016447    0091898541     CHARISA QANITA SUHARYANTO      Perempuan     
+10   20251016232    0105043259     DAFANO RESTU UTAMA             Laki-laki     
+11   20251016303    0095794316     DARA NOVITASARI                Perempuan     
+12   20251016271    0108184572     ELLYSZA AULIA RISTIANA         Perempuan     
+13   20251016451    0102762545     FAWAZA AFGANAURA TSANY         Perempuan     
+14   20251016308    0101111027     GALUH MUTIARA PRATIWI          Perempuan     
+15   20251016384    0091573851     INTAN CAHANI                   Perempuan     
+16   20251016277    0096301006     KANAYA CIFA AZ ZAHRA           Perempuan     
+17   20251016386    0104395457     Keysa Regina Putri Kuhuwael    Perempuan     
+18   20251016206    3098129554     MALANA KAYLA NUR AZIZA         Perempuan     
+19   20251016570    01035785540    MUHAMMAD ALIFFICO AKBAR HK     Laki-laki     
+20   20251016245    0107250043     MUHAMMAD ARFA ATHALLAH         Laki-laki     
+21   301036307006   0101909077     MUHAMMAD KEVIN JULIANO WASSIL  Laki-laki     
+22   20251016528    0097103439     Najwa Zaenata Kurniawan        Perempuan     
+23   20251016285    0096926250     NATASYA AGUSTINA RAMADHANI     Perempuan     
+24   20251016573    0108028455     NOORISA NAIRA FALISHA          Perempuan     
+25   20251016466    0092349044     RAKYAN MAHARAJA KRISHNA        Laki-laki     
+26   20251016469    0104654153     RENATA APRILIA ARIS JANNATI    Perempuan     
+27   20251016291    0098111882     RENDY CAESAR ANANTO            Laki-laki     
+28   20251016292    0108036234     ROMY TRI RAHMATDON             Laki-laki     
+29   20251016398    0102137730     Ryrin Cantika Dewi             Perempuan     
+30   20251016399    0103477521     SAADAN EMILLUL FATA            Laki-laki     
+31   20251016470    0137817144     SASIKIRANA ABYTA HASAN         Perempuan     
+32   20251016400    0097787033     SRESHI ZELDA AIRANI            Perempuan     
+33   20251016538    0102216058     TANAYA LINTANG ILAIKA          Perempuan     
+34   20251016330    0084276473     YOGA PRASETYO                  Laki-laki     
+35   20251016436    0103573506     ZAFINA NUR RAMADHANI SIAGIAN   Perempuan     
+36   20251016540    0107675686     ZAHROTUSYITA GHASSANI          Perempuan     
+Jumlah siswa: 36
+
+============================================================================================
+XI-G | WALI KELAS: DWI BUDI RAHAYU,S.PD.,M.Pd.
+============================================================================================
+No   NIS            NISN           Nama Lengkap                        Jenis Kelamin 
+-------------------------------------------------------------------------------------
+1    20251016188    0107402838     ALDITA ANNASTYA PUTRI               Perempuan     
+2    20251016300    0099874629     ALISYA BILQIS NAFIZA                Perempuan     
+3    20251016335    0099852483     ALMIRAH SAVA ZABRINA                Perempuan     
+4    20251016226    0101570122     ARYAZETHA AL MALIK SASMITA HADINATA Laki-laki     
+5    20251016485    0101086269     BAGAS HEFI SETIAWAN                 Laki-laki     
+6    20251016411    0096063392     CARRISA TRININDYA SUDIARTO          Perempuan     
+7    20251016412    0096330619     CHIKA ALYA MUKHBITA                 Perempuan     
+8    20251016516    0101926292     DELISHA REANDRA KUSUMAPUTRI         Perempuan     
+9    20251016380    0092226739     DEVINO PUTRA NOVA SANJAYA           Laki-laki     
+10   20251016517    0097318704     DEVITA ANGGRAENI SUHENDAR           Perempuan     
+11   20251016233    0093554110     DINDA PUTRI ANGGRAENI               Perempuan     
+12   20251016305    0089109445     DINDA STYA NOVITA                   Perempuan     
+13   20251016586    3091428878     DINI NAYLA HIKMAH                   Perempuan     
+14   20251016383    0104073397     FEBRYANA PUSPA                      Perempuan     
+15   20251016307    0106883801     FRIZKA CHAMELIA PUTRI LISWANDANI    Perempuan     
+16   20251016275    0105126894     HARYO HAWWARI MA'SHUM               Laki-laki     
+17   20251016584    0102160022     HILAL ANDRIYA FATAHILAH             Laki-laki     
+18   20251016310    0105126894     Ibrahim fachry Wijaya               Laki-laki     
+19   20251016311    0093091373     JESSICA APRILIANA DEWI              Perempuan     
+20   20251016348    3103430219     KINEISHA AQILA MUFIDA               Perempuan     
+21   20251016461    0105647381     MUHAMMAD EYGA AL-FADHIL             Laki-laki     
+22   20251016247    3092968504     MUHAMMAD IKHSAN ALGHIFARIE          Laki-laki     
+23   20251016169    0107561346     NABILA AULYA PUTRI                  Perempuan     
+24   20251016392    0098836983     NADIATUL QOLBIYEH                   Perempuan     
+25   20251013620    0101201322     NOEALLA DINDA AYUDYA                Perempuan     
+26   20251016177    0098145148     RADITIA AYU H                       Perempuan     
+27   20251016290    0107081537     RAIHAN IBNU ARKANA                  Laki-laki     
+28   20251016215    0099787142     RAVA ARAYA PUTRA                    Laki-laki     
+29   20251016324    0106997147     REHAN RAMADANI                      Laki-laki     
+30   20251016217    0105714697     RIZKI DWI SAPUTRA                   Laki-laki     
+31   20251016432    0106395780     SAUFA FIDYA HAFIZA                  Perempuan     
+32   20251016433    0105728605     SHAFIRA AURELLIA RAHSETYA           Perempuan     
+33   20251016326    0096005550     SHAFIRA REASTY ADELIA               Perempuan     
+34   20251016258    0096698233     SISKA NUR OKTAVIANI                 Perempuan     
+35   20251016435    0108782826     SYIFA SAPHIRA NATHANIA PUTRI        Perempuan     
+36   20251016329    0103088363     WINNO ELVIO SATRIA PAMUNGKAS        Laki-laki     
+Jumlah siswa: 36
+
+============================================================================================
+XI-H | WALI KELAS: AGUNG SETYO NUGROHO,S.KOM.,S.Pd.
+============================================================================================
+No   NIS            NISN           Nama Lengkap                   Jenis Kelamin 
+--------------------------------------------------------------------------------
+1    20251016369    0091150240     AGRISNA HIDAYAH RAMADHANI      Perempuan     
+2    20251016332    0098577121     AGUSTIN WIDYAWATI              Perempuan     
+3    20251016439    0108517968     ANANDA AZRIEL BASWARA          Laki-laki     
+4    20251016225    0105943436     ARIYA PUTRA OKTAMA             Laki-laki     
+5    20251016336    0095322831     AUDYA RISMA OKTAVIANI          Perempuan     
+6    20251016484    0103973526     AUZRIEL THIFAL WICAKSONO PUTRA Laki-laki     
+7    20251016443    0101583856     AZIZAH LADIA AMIN              Perempuan     
+8    20251026513    0104376732     BALAPRADHANA                   Laki-laki     
+9    20251016514    0106569503     CAIRO AHMAD PRASETYO           Laki-laki     
+10   20251016270    0096713998     DARILHILBRAMSYAH               Laki-laki     
+11   20251016559    0101164888     DIMAS AJI PAMUNGKAS            Laki-laki     
+12   20251016561    0106349349     ENDYNIA KUSUMADEWI             Perempuan     
+13   20251016274    3100729180     GHOSSANI                       Perempuan     
+14   20251016519    0096946934     HAFIZ ZAIN SYAHRIL             Laki-laki     
+15   20251016162    0106985436     IQBAL ARDEANTO PUTRA SETIAWAN  Laki-laki     
+16   20251016521    0093120793     IQBAL YURY PRATAMA             Laki-laki     
+17   20251016202    0107956227     JENIVER ISABEL K.              Perempuan     
+18   20251016236    0104766230     KAISAN AZZAM PRAMATYA          Laki-laki     
+19   20251016572    0091644055     M IQBAL DARMANA                Laki-laki     
+20   20251016315    0094854113     M. Al Hafidz Putra Mahendra    Laki-laki     
+21   20251016389    0109853659     MUAMAR RAFIDAN                 Laki-laki     
+22   20251016460    0091912182     MUHAMMAD AFRIZAL SAPUTRA       Laki-laki     
+23   20251016571    0104183391     MUHAMMAD ARYO SETO FALIANSYAH  Laki-laki     
+24   20251016354    0107633456     Muhammad Rezvan Azis           Laki-laki     
+25   20251016529    0103866716     NARENDRA PUTRA BUMI            Laki-laki     
+26   20251016357    0096842441     NIZA DESMIARTI                 Perempuan     
+27   20251016250    0117029225     RAFAEL MONTERO                 Laki-laki     
+28   20251016576    0103942542     RAHMAD RAMADHAN                Laki-laki     
+29   20251016178    0091356701     RANGGA TEGAR SYAHPUTRA         Laki-laki     
+30   20251016255    0107754868     RIRIN KARLINA                  Perempuan     
+31   20251016257    3100478335     SATRIA ADJI W, S               Laki-laki     
+32   20251016218    0097733150     SEPTI AMELIA AMANDA PUTRI      Perempuan     
+33   20251016537    0096456744     SHIFA NUR LAYLI                Perempuan     
+34   20251016472    0094067403     SILVIANA OKTA                  Perempuan     
+35   20251016182    0086636422     Sulton Restu Kurnia Aziz       Laki-laki     
+Jumlah siswa: 35
+
+============================================================================================
+XI-I | WALI KELAS: SRIDEVI,S.Pd.
+============================================================================================
+No   NIS            NISN           Nama Lengkap                   Jenis Kelamin 
+--------------------------------------------------------------------------------
+1    20251016299    0095042227     AIRA WIBOWO                    Perempuan     
+2    20251016547    0084794545     ANANDA EKA PUTRI               Perempuan     
+3    20251016190    0104917209     ANGELICA PRIMA APRILLIA        Perempuan     
+4    20251016480    0091459525     ARDAN NAFIL KAUTSAR            Laki-laki     
+5    20251016195    0098768396     BARA HAKIKI WIDINUGROHO        Laki-laki     
+6    20251016556    0091500309     BERYL ACACIA LUNETA            Perempuan     
+7    20251016231    0098931703     CELLVIA DHESY NUR FADHILLAH    Perempuan     
+8    20261117026    0096158371     DISA WULAN PRATISTA            Perempuan     
+9    20251016344    0092777567     Fauzan Zaki Dwi Andhika        Laki-laki     
+10   20251016587    0103759075     FEBRONIA ELENA WINARNA         Perempuan     
+11   20251016309    0099046264     HARYO SENO                     Laki-laki     
+12   20251016457    0108956224     Jihaan Kaltsum Kaamiliaa Afaaf Perempuan     
+13   20251016523    0095406545     KIRANA FITRI NURALISYA         Perempuan     
+14   20251016426    0099768980     M. WIRA PRATAMA                Laki-laki     
+15   20251016497    3097737946     M.AKMAL FATAH                  Laki-laki     
+16   20251016525    0097323463     MERLITA CAHYA PERTIWI          Perempuan     
+17   20251016316    0101708272     MESSI OLIVIA PUTRI BONAFITA    Perempuan     
+18   20251016246    0101854854     MUHAMMAD FACHRUL ARDIANSYAH    Laki-laki     
+19   20251016498    3094979027     MUHAMMAD NAJIB SAPUTRA         Laki-laki     
+20   20251016353    0108147271     MUHAMMAD RAKHA AULIA           Laki-laki     
+21   20251016427    0095254281     Nadira Oktaviani Kurniawan     Perempuan     
+22   20251016248    0098113154     NATALIA CAHAYA CHRISTIANI      Perempuan     
+23   20251016355    0093566772     NAYLA PUTRI OKTAFIANI          Perempuan     
+24   20251016356    0091166250     NAYLA RIZKI                    Perempuan     
+25   0093849756     0093849756     REIFAN BAYU SAPUTRA            Laki-laki     
+26   20251016430    0097120495     Revano Ananda Santoso          Laki-laki     
+27   20251016533    0105382823     REZA NURHADI RAHMAN            Laki-laki     
+28   20251016254    0105538984     RIKZA FADHIL SUPRAPTO          Laki-laki     
+29   20251016503    0098581331     rinjani nabila zahra Wicaksono Perempuan     
+30   20251016431    0094510564     SAFIRA OCTAVIANI               Perempuan     
+31   20251016535    0101184604     Safitri intan nuraini          Perempuan     
+32   20251016259    0107720923     STEFANUS MICHAEL WIJAYA        Laki-laki     
+33   20251016363    0103772241     TIFFANI SUCI UTAMI             Perempuan     
+34   20251016221    0106672379     TIMOTHY KEVIN DAMARELL         Laki-laki     
+35   20251016473    0093595262     ZASKIA NABILA PUTRI            Perempuan     
+36   20251016543    0096852204     ZULVIANA DEVIANA PUTRI         Perempuan     
+Jumlah siswa: 36
+
+============================================================================================
+XI-J | WALI KELAS: DIAH MIHARTI,S.Pd.
+============================================================================================
+No   NIS            NISN           Nama Lengkap                   Jenis Kelamin 
+--------------------------------------------------------------------------------
+1    20251016544    00886027320    ADISTYA NAURA FEBRIANI         Perempuan     
+2    20251016403    3097365511     Afnì Nur Octavia               Perempuan     
+3    20251016438    0097663145     Agnes Alifa Rehadatul Aisya    Perempuan     
+4    20251016546    0096463680     ALMIRA ANDINI RAISSA           Perempuan     
+5    20251016374    0097840284     Anissa Anzani                  Perempuan     
+6    20251016550    0097558778     ARDIAN PUTRA NURYANA           Laki-laki     
+7    20251016551    0103049703     ARDIANSYAH RIZKI DWI ARDANA    Laki-laki     
+8    20251016227    0106671546     ATHA MIRZA PURNOMO             Laki-laki     
+9    20251016554    0092449046     ATHAYA ISAURA ZAFRINA PUTRI    Perempuan     
+10   20251016486    0103916515     CAESAR RAFASHA PUTRA NUGROHO   Laki-laki     
+11   20251016445    0099945830     CALLYSTA ZULFA SALSABILA       Perempuan     
+12   20251016382    0107489213     Diza Mutya Mulya               Perempuan     
+13   20251016449    0104602241     DZAKI ZAHRI WIBISANA           Laki-laki     
+14   20251016450    0103499794     EVELYNE PARAMITHA HAYUNINGTYAS Perempuan     
+15   20251016518    0108390979     FAHREZA AZAHRA RIZQINA         Perempuan     
+16   20251016416    0093858787     Fairuz Adi                     Laki-laki     
+17   20251016419    0093506884     FELISA MARCHEILA               Perempuan     
+18   20251016346    0107375554     GHEVA SATRIA AJI PRATAMA       Laki-laki     
+19   20251016566    0093992063     IKHTIARA QIRANI                Perempuan     
+20   20251016385    0104707756     JAVIER RAZZAAQ SETIAWAN        Laki-laki     
+21   20251016567    0092944102     JULIA PUTRI KARTIKA            Perempuan     
+22   20251016424    0105334950     MARETA DWI ARYANTI             Perempuan     
+23   20251016494    0094651833     MEISA KRISTINA WIDIYANTI       Perempuan     
+24   20251016425    0086855579     MOCHAMMAD AFGAN RAMADHAN       Laki-laki     
+25   20251016282    0104180259     MUHAMMAD ADAM ARIYANTO         Laki-laki     
+26   20251016390    0091448659     MUHAMMAD NUR SIDIQ ARRAFFI     Laki-laki     
+27   20251016393    0107809630     NAJMA FAKHIRA                  Perempuan     
+28   20251016574    0093566765     PUTRI KIRANA PRATIWI           Perempuan     
+29   20251016428    0105040392     RAFA ARDIAN PRASETYA           Laki-laki     
+30   20251016577    0091436891     RAHMADHANI PUTRI VISRIANA      Perempuan     
+31   20251016360    0104800011     RAISSANAYA HASTI SANIYYA       Perempuan     
+32   20251016504    0107092972     Rivanno Rizky Ramadhan         Laki-laki     
+33   20251016578    0098664279     SEKAR AYU MAHARANI             Perempuan     
+34   20251016222    0101012760     VANIA KUSUMA BISONO            Perempuan     
+35   20251016579    0101746180     ZACH AL GUZALU                 Laki-laki     
+36   20251016331    0107366958     ZASKIA ANANDA PUTRI            Perempuan     
+Jumlah siswa: 36
+
+============================================================================================
+XI-K | WALI KELAS: ADE HARNANTO,S.Pd.
+============================================================================================
+No   NIS            NISN           Nama Lengkap                     Jenis Kelamin 
+----------------------------------------------------------------------------------
+1    20251016260    0098082768     ABDUL HAMAS HAFIZ                Laki-laki     
+2    20251016545    0103945730     ALBIRRA RAFINARANTI              Perempuan     
+3    20251016406    0104399010     AMANDA FEBRIANA QOMARIYAH        Perempuan     
+4    20251016511    0106985192     AMARANGGANA MAHESWARI            Perempuan     
+5    20251016266    0105915782     ARZEA BUNGA HUSNA JANNETA        Perempuan     
+6    20251016192    0107855734     ASIYAH DZAKIROH                  Perempuan     
+7    20251016553    0091664228     ATALLAH DHUHA PAUNDRAMAURA       Laki-laki     
+8    20251016153    0092073429     AURELIA KANZA JANEETA            Perempuan     
+9    20251016377    0102110698     BALQIS KHANSA AZZAHRA            Perempuan     
+10   20251016155    0097245117     BHIMA MAJID ARYASATYA            Laki-laki     
+11   20251016446    0096940523     CELLICA IZZA AMG                 Perempuan     
+12   20251016379    0103639693     DAVINA ATHANIA                   Perempuan     
+13   20251016158    0099074615     desiani putri srikandi           Perempuan     
+14   20251016558    00103046001    DIANDRA EMBUN TUNGGAL ARIYANI    Perempuan     
+15   20251016565    0096003480     GYANT IKUTAMA ARTHARISTA PRADANA Laki-laki     
+16   20251016455    0107375475     IBRA KURNIA SAPUTRA              Laki-laki     
+17   20251016456    0108064447     IMELYA REIKA MAHARANI            Perempuan     
+18   20251016203    0098702251     KAYLA ZUHRAN ALFIANTO            Perempuan     
+19   20251016423    0096000333     KHIKMATUL BALIGHOH SENJANI       Perempuan     
+20   20251016349    0104440594     LUTHFIYAH SETYOLINDA HERNEDI     Perempuan     
+21   20251016166    0095373550     Mohammad Randika Junianto        Laki-laki     
+22   20251016283    0103322294     NABILA KANAHAYA                  Perempuan     
+23   20251016318    0104658399     NAILA AZIZATI RAHMAH             Perempuan     
+24   20251016319    0108278040     NAJLAA ZAHRANI RYBEE             Perempuan     
+25   20251016462    0091641546     NALENDRA KHOIRUL IJAZ KUSUMA     Laki-laki     
+26   20251016585    3106175695     Nashif Imtiyaz Al Faruq          Laki-laki     
+27   20251016286    0099624985     NAUFAL FAKHRUSY                  Laki-laki     
+28   20251016176    0096809492     QUINSHA NAMIRA DANAIRA           Perempuan     
+29   20251016429    0109968925     RAFAN DEFANDRYAN SHAHNAWAZ       Laki-laki     
+30   20251016253    0104728370     RIDHO AL FATTAAH                 Laki-laki     
+31   0099552353     0099552353     SHAFFA AZZAHRANISSA              Perempuan     
+32   20251016362    0097300538     SYAKILA NUR WIDYANA              Perempuan     
+33   20251016295    010377382      ZAHRA SYIFA ARISTA               Perempuan     
+34   20251016366    0094858626     ZAKIY FARIS KHOIRY               Laki-laki     
+35   20251016541    0098763112     ZAKY IQBAL NUGRAHA               Laki-laki     
+36   20251016187    0092143371     ZIDNI AISYATUL HASANAH           Perempuan     
+Jumlah siswa: 36
+
+============================================================================================
+XI-L | WALI KELAS: ARISWANTO,S.Pd.
+============================================================================================
+No   NIS            NISN           Nama Lengkap                          Jenis Kelamin 
+---------------------------------------------------------------------------------------
+1    20251016368    0091184118     ABDULLAH NAFIS ALFIKRI                Laki-laki     
+2    20251016333    0092145230     AGVIS ELVARETHA AZARINE               Perempuan     
+3    20251016370    0083624137     AHMAD AZHAR ANNAS                     Laki-laki     
+4    20251016405    0104217986     ALRIZAL FADHILA ABBAD                 Laki-laki     
+5    20251016409    0091845592     Aulia Safitri                         Perempuan     
+6    20251016230    0106965811     Bella Citra Maharani                  Perempuan     
+7    20251016557    0097130290     BILQIS AGRINA REFASHA                 Perempuan     
+8    20251016444    0109728608     BIMA PUTRA KURNIAWAN                  Laki-laki     
+9    20251016448    0085448657     DICKO EFENDI                          Laki-laki     
+10   20251016560    0094909130     DINDA AGUSTINA AYU KUSAIRI            Perempuan     
+11   20251016562    0095987090     FACHRY SYABIAN                        Laki-laki     
+12   20251016418    0097888255     FEBYANTI NURSARI                      Perempuan     
+13   20251016452    0101781450     FINANDA KHANSA RAMADHANI              Perempuan     
+14   20251016493    0107606950     JENNYFA MASIMILLIANA SETYA AR RAHMAN  Perempuan     
+15   20251016241    0097227335     LILIANA CEYEJEONG DENOVA              Perempuan     
+16   20251016314    0093523287     lintang tirta bayu Sulistyo           Laki-laki     
+17   20251016350    0102456428     MAULYDHA ADITYA WARDHANI              Perempuan     
+18   20251016317    0095724589     MUHAMAD RIZKY RAMADANI                Laki-laki     
+19   20251016168    0093135460     MUHAMMAD NARENDRA SUKMA               Laki-laki     
+20   20251016463    0103208532     NASYWA WIDIAS PUTRI                   Perempuan     
+21   20251016394    0093371815     NAUFAL MUHAMMAD HUDA                  Laki-laki     
+22   20251016212    0099610394     NAYLA ZUHRAN ALFIANTO                 Perempuan     
+23   20251016173    0091529098     OKY SAPUTRA                           Laki-laki     
+24   20251016174    0094464967     PUTRI NAJWA ARSYA KARIMA              Perempuan     
+25   20251016251    3102277871     RAHMA DWI PUJI NIRTANINGSIH PUTRI ADI Perempuan     
+26   20251016322    0083034153     RAHMAWATI                             Perempuan     
+27   20251016323    0099802011     RAKA PRADIKA ABDI SAPUTRA             Laki-laki     
+28   20251016467    0088459775     Rangga Prasetyo                       Laki-laki     
+29   20251016468    0105764639     RAYNAR RAKHA RAHENDRA                 Laki-laki     
+30   20251016361    0082332483     REVITA AYU                            Perempuan     
+31   20251016256    0099836955     RIZKA AMELIA PUTRI                    Perempuan     
+32   20251016328    3099538528     SILVA DWI ADRIANI                     Perempuan     
+33   20251016181    0093414230     SIVA SULISTIYANA                      Perempuan     
+34   20251016220    3100335950     TEGAR DWI JULIANTO                    Laki-laki     
+35   20251016184    0091689127     VALENCIA SHAVA KIRANA                 Perempuan     
+36   20251016223    0092065696     ZAKIA PUTRI DONITA                    Perempuan     
+Jumlah siswa: 36
+
+============================================================================================
+RINGKASAN
+============================================================================================
+Jumlah kelas: 12
+Jumlah siswa: 431
